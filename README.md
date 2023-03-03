@@ -20,9 +20,9 @@ WMADHelper is a feature rich DiscordJS v14 implementation that is:
 
 ## 🛠️ Planned Feature Categories
 
--   [] Assignments
--   [] Moderation
--   [] Utility
+-   [ ] Assignments
+-   [ ] Moderation
+-   [ ] Utility
 
 ## 💻 Tech
 
