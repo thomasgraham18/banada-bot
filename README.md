@@ -18,7 +18,7 @@ WMADHelper is a feature rich DiscordJS v14 implementation that is:
 -   [x] SoundCloud Support
 -   [x] Spotify Support
 
-## 🛠️ Planned Feature Categories
+## 🛠️ Possible Future Features
 
 -   [ ] Assignments
 -   [ ] Moderation
