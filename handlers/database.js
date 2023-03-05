@@ -35,7 +35,18 @@ module.exports = async (client) => {
 			}
 		);
 
-		let date = dayjs(due).toDate();
+		let date = dayjs(due);
+
+		if (date.isValid()) {
+			if(date.year() == 2001) {
+				//then geto ut of here 
+				date = date.set('year', dayjs().year())
+				console.log(dayjs().year());
+				console.log(date);
+			}
+		}
+
+		//let date = dayjs(due).toDate();
 
 		if(date == "Invalid Date") {
 			await interaction.reply({
@@ -45,12 +56,12 @@ module.exports = async (client) => {
 			return;
 		}
 
-		console.log("[INFO] Adding Assignment, Future ID: " + (++i));
+		console.log("[INFO] Adding Assignment, Future ID: " + (i+1));
 
 		await db.set(++i, {
 			name: name,
 			course: course,
-			due: dayjs(due).toDate()
+			due: date
 		});
 	};
 

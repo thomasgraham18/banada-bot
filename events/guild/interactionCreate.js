@@ -71,11 +71,13 @@ module.exports = async (client, interaction) => {
 			return await interaction.respond(choice).catch(() => {});
 
 		} else if(interaction.options.getSubcommand() == 'view' 
-			|| interaction.options.getSubcommand() == 'delete' 
+			|| interaction.options.getSubcommand() == 'remove' 
 			|| interaction.options.getSubcommand() == 'edit') {
 			let choice = [];
 
 			let assignments = await client.getAllAssignments();
+			
+			assignments.sort((a, b) => (new Date(a.data.due) - new Date(b.data.due)));
 
 			console.log(assignments)
 
