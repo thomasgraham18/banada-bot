@@ -17,7 +17,7 @@ module.exports = async (client, interaction) => {
 	if (!interaction.guild || interaction.user.bot) return;
 
 	// Check for slash command
-	if (!interaction.isChatInputCommand()) return;
+	//if (!interaction.isChatInputCommand()) return;
 
 	const command = interaction.client.commands.get(interaction.commandName);
 
@@ -32,7 +32,8 @@ module.exports = async (client, interaction) => {
 		const Random =
 			SEARCH_DEFAULT[Math.floor(Math.random() * SEARCH_DEFAULT.length)];
 
-		if (interaction.commandName == 'play') {
+		if (command == 'play') {
+
 			let choice = [];
 			await ytsr(interaction.options.getString('search') || Random, {
 				safeSearch: true,
@@ -43,6 +44,7 @@ module.exports = async (client, interaction) => {
 				});
 			});
 			return await interaction.respond(choice).catch(() => {});
+
 		} else if (interaction.options.getSubcommand() == 'playskip') {
 			let choice = [];
 			await ytsr(interaction.options.getString('search') || Random, {
@@ -54,6 +56,7 @@ module.exports = async (client, interaction) => {
 				});
 			});
 			return await interaction.respond(choice).catch(() => {});
+
 		} else if (interaction.options.getSubcommand() == 'playtop') {
 			let choice = [];
 			await ytsr(interaction.options.getString('search') || Random, {
@@ -64,9 +67,27 @@ module.exports = async (client, interaction) => {
 					choice.push({ name: x.name, value: x.url });
 				});
 			});
+
 			return await interaction.respond(choice).catch(() => {});
-		}
+
+		} else if(interaction.options.getSubcommand() == 'view' 
+			|| interaction.options.getSubcommand() == 'delete' 
+			|| interaction.options.getSubcommand() == 'edit') {
+			let choice = [];
+
+			let assignments = await client.getAllAssignments();
+
+			console.log(assignments)
+
+			assignments.forEach((x) => {
+				choice.push({ name: `📌${x.data.name} 🎓Course: ${x.data.course} 🕒 Due Date: ${x.data.due} | (ID: ${x.ID})`, value: x.ID });
+			});
+
+			return await interaction.respond(choice).catch(() => {});
+		} 
 	}
+
+	if (!interaction.isChatInputCommand()) return;
 
 	try {
 		command.execute(interaction, client);
