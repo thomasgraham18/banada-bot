@@ -6,8 +6,11 @@ const advancedFormat = require("dayjs/plugin/advancedFormat");
 const humanize = require("dayjs/plugin/relativeTime");
 
 module.exports = {
+    // Command structure: 
+    // /assignments [action] <name> <course> <due>
+    // actions are subcommands
   data: new SlashCommandBuilder()
-    .setName("assignment")
+    .setName("assignments")
     .setDescription("Assignment CRUD")
     .addSubcommand((subcommand) =>
       subcommand
@@ -90,30 +93,34 @@ module.exports = {
       subcommand.setName("list").setDescription("View all assignments")
     ),
 
+  // TODO: CHANGE "REMOVE" TO "COMPLETE".
+
   async execute(interaction, client) {
+    // ? The subcommand is the action we're doing (add/view/all/remove/edit)
     const subcommand = interaction.options.getSubcommand();
 
+    dayjs.extend(customParseFormat);
+    dayjs.extend(advancedFormat);
     //all view and remove are simpler
 
     if (subcommand === "list") {
-      dayjs.extend(customParseFormat);
-      dayjs.extend(advancedFormat);
 
       const assignments = await client.getAllAssignments();
 
       const embed = new EmbedBuilder()
         .setTitle("Current Assignments")
-        .setColor(0x0000ff)
+        .setColor(0xA020F0)
         .setDescription(
           assignments
             .map((assignment) => {
                 const due = dayjs(assignment.data.due);
 
-              return `
-                    🔢 **ID:** ${assignment.ID}
-                    📌 **Assignment:** ${assignment.data.name}
+              return `🔢 **ID:** ${assignment.ID}
+                    📌 **Assignment:** 
+                    ${assignment.data.name}
                     🎓 **Course:** ${assignment.data.course}
-                    🕒 **Time Remaining:** <t:${due.format('X')}:R>
+                    🕒 **Due:** <t:${due.format('X')}:R>
+                    
                     `;
             })
             .join("\n")
@@ -130,14 +137,15 @@ module.exports = {
       //view a specific assignment
       const id = interaction.options.getNumber("id");
       const assignment = await client.getAssignment(interaction, id);
+      const due = dayjs(assignment.due)
 
       const embed = new EmbedBuilder()
-        .setTitle("Assignment")
-        .setColor(0x0000ff)
+        .setTitle(`🚀🎉📝 Hey there! Check out the new assignment`)
+        .setColor(0xA020F0)
         .setDescription(
           `📌 **Assignment:** ${assignment.name}
                     🎓 **Course:** ${assignment.course}
-                    🕒 **Due:** ${assignment.due}`
+                    🕒 **Due:** <t:${due.format('X')}:R>`
         )
         .setTimestamp();
 
@@ -147,38 +155,58 @@ module.exports = {
     if (subcommand === "remove") {
       //remove an assignment
       const id = interaction.options.getNumber("id");
+      const assignment = await client.getAssignment(interaction, id);
+      const due = dayjs(assignment.due)
       await client.deleteAssignment(interaction, id);
 
       const embed = new EmbedBuilder()
-        .setTitle("Assignment Removed")
-        .setColor(0x0000ff)
-        .setDescription(`Removed assignment: ${id}`)
+        .setTitle("🎉 Congratulations! **Assignment Completed!** 🎉")
+        .setColor(0xC70039 )
+        .setDescription(`
+
+        📌 **Assignment:** ${assignment.name}
+        🎓 **Course:** ${assignment.course}
+        🕒 **Due:** <t:${due.format('X')}:R>
+        
+        👏🏼 Great work! You have successfully completed this assignment. 👏🏼
+        Take a moment to celebrate your accomplishment! 
+        🎉🎊💻🚀`)
         .setTimestamp();
 
       await interaction.reply({ embeds: [embed] });
     }
 
     //add, edit are more complicated
-
+    // TODO: TRIM ORDINAL NOTATION (LETTERS FROM DATE)
     if (subcommand === "add") {
       //add an assignment
       const name = interaction.options.getString("name");
       const course = interaction.options.getString("course");
-      const due = interaction.options.getString("due");
+      const date = interaction.options.getString("due");
 
+      let due = dayjs(date)
+
+      if (due.isValid()) {
+        if(due.year() != dayjs().year()) {
+          console.log("TEST");
+          //then geto ut of here 
+          due = due.set('year', dayjs().year())
+          console.log(due);
+        }
+      }
+      
       await client.addAssignment(interaction, name, course, due);
 
       if (interaction.replied) return;
 
       const embed = new EmbedBuilder()
-        .setTitle("Assignment Added")
-        .setColor(0x0000ff)
+        .setTitle("💡 New Assignment Alert! 📝")
+        .setColor(0x228B22)
         .setDescription(
-          `💡 New Assignment Alert! 📝
-
+          `
                 📌 **Assignment:** ${name}
                 🎓 **Course:** ${course}
-                🕒 Due: ${due} 
+                🕒 **Due:** <t:${due.format('X')}:R> 
                 
                 Get to work! 💪🏼💻🚀
                 `
@@ -188,21 +216,37 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
     }
 
+    // TODO: TRIM ORDINAL NOTATION (LETTERS FROM DATE)
     if (subcommand === "edit") {
       //edit an assignment
       const id = interaction.options.getNumber("id");
       const name = interaction.options.getString("name") ?? null;
       const course = interaction.options.getString("course") ?? null;
-      const due = interaction.options.getString("due") ?? null;
+      const date = interaction.options.getString("due") ?? null;
+
+      let due = dayjs(date)
+
+      if (due.isValid()) {
+        if(due.year() != dayjs().year()) {
+          console.log("TEST");
+          //then geto ut of here 
+          due = due.set('year', dayjs().year())
+          console.log(due);
+        }
+      }
 
       await client.editAssignment(interaction, id, name, course, due);
+      
       const assignment = await client.getAssignment(interaction, id);
+      const daysJSdue = dayjs(assignment.due);
 
       const embed = new EmbedBuilder()
-        .setTitle("Assignment Edited")
-        .setColor(0x00ff00)
+        .setTitle("🚀🎉📝 Hey there! Check out the updated assignment")
+        .setColor(0xFFA500)
         .setDescription(
-          `Edited assignment: ${assignment.name} • ${assignment.course} (${assignment.due})`
+          `📌 **Assignment:** ${assignment.name}
+          🎓 **Course:** ${assignment.course}
+          🕒 **Due:** <t:${daysJSdue.format('X')}:R>`
         )
         .setTimestamp();
 

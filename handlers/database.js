@@ -25,30 +25,20 @@ module.exports = async (client) => {
 			databaseInObject: true
 		});
 
-		const results = await db.all();
+		const assignments = await db.all();
 
-		let i = 0;
+		let highestKey = 0;
 
-		results.forEach(
-			e => {
-				i = e.ID > i ? e.ID : i;
+		assignments.forEach(
+			assignment => {
+				highestKey = 
+					assignment.ID > highestKey 
+					? assignment.ID 
+					: highestKey;
 			}
 		);
 
-		let date = dayjs(due);
-
-		if (date.isValid()) {
-			if(date.year() == 2001) {
-				//then geto ut of here 
-				date = date.set('year', dayjs().year())
-				console.log(dayjs().year());
-				console.log(date);
-			}
-		}
-
-		//let date = dayjs(due).toDate();
-
-		if(date == "Invalid Date") {
+		if(due == "Invalid Date") {
 			await interaction.reply({
 				content: 'Invalid Date',
 				ephemeral: true
@@ -56,12 +46,10 @@ module.exports = async (client) => {
 			return;
 		}
 
-		console.log("[INFO] Adding Assignment, Future ID: " + (i+1));
-
-		await db.set(++i, {
+		await db.set(++highestKey, {
 			name: name,
 			course: course,
-			due: date
+			due: due
 		});
 	};
 
@@ -101,14 +89,17 @@ module.exports = async (client) => {
 
 		const assignment = db.get(id.toString());
 
-		if(name == null) name = assignment.name;
-		if(course == null) course = assignment.course;
-		if(due == null) due = assignment.due;
+		if(!name) name = assignment.name;
+		if(!course) course = assignment.course;
+		if(due == null || isNaN(due)) due = assignment.due;
+
+		console.log("due: " + due);
+		console.log("assignment.due: " + assignment.due)
 
 		await db.set(id.toString(), {
 			name: name,
 			course: course,
-			due: due
+			due: dayjs(due)
 		});
 	};
 

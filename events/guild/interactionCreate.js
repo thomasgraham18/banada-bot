@@ -3,6 +3,7 @@ const {
 	PermissionsBitField,
 	CommandInteraction,
 } = require('discord.js');
+const dayjs = require('dayjs');
 const ytsr = require('@distube/ytsr');
 const SEARCH_DEFAULT = ['lo fi', '83hades', 'xxxtentacion', 'lil uzi vert'];
 
@@ -79,10 +80,10 @@ module.exports = async (client, interaction) => {
 			
 			assignments.sort((a, b) => (new Date(a.data.due) - new Date(b.data.due)));
 
-			console.log(assignments)
+			console.log("From interaction create")
 
 			assignments.forEach((x) => {
-				choice.push({ name: `📌${x.data.name} 🎓Course: ${x.data.course} 🕒 Due Date: ${x.data.due} | (ID: ${x.ID})`, value: x.ID });
+				choice.push({ name: `📌${x.data.name} 🎓Course: ${x.data.course}`, value: x.ID });
 			});
 
 			return await interaction.respond(choice).catch(() => {});
