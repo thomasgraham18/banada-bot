@@ -1,8 +1,7 @@
 const { Database } = require('st.db');
 const { green } = require('chalk');
-const { dayjs } = require('dayjs');
-dayjs().format();
-console.log(dayjs);
+const dayjs  = require('dayjs');
+console.log(dayjs().format());
 
 /**
  * @description Load database methods
@@ -37,10 +36,8 @@ module.exports = async (client) => {
 		);
 
 		let date = dayjs(due).toDate();
-		console.log("dayjs date: " + date);
 
-		if(date == null) {
-			console.log("invalid date?");
+		if(date == "Invalid Date") {
 			await interaction.reply({
 				content: 'Invalid Date',
 				ephemeral: true

@@ -1,4 +1,8 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const dayjs = require('dayjs');
+const duration = require('dayjs/plugin/duration');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
+const advancedFormat = require('dayjs/plugin/advancedFormat');
 
 module.exports = {
     data: (new SlashCommandBuilder()
@@ -80,19 +84,22 @@ module.exports = {
         //all view and remove are simpler
 
         if (subcommand === 'list') {
+            dayjs.extend(customParseFormat);
+            dayjs.extend(advancedFormat);
+            dayjs.extend(duration);
+
             const assignments = await client.getAllAssignments();
 
-            console.log(assignments)
-
             const embed = new EmbedBuilder()
-                .setTitle('Assignments')
-                .setColor(0x00FF00)
+                .setTitle('Current Assignments')
+                .setColor(0x0000FF)
                 .setDescription(assignments.map(assignment => {
                     return `
                     🔢 **ID:** ${assignment.ID}
                     📌 **Assignment:** ${assignment.data.name}
                     🎓 **Course:** ${assignment.data.course}
-                    🕒 **Due:** ${assignment.data.due}`
+                    🕒 **Due:** ${dayjs(assignment.data.due)
+                        .format('MMMM Do')}`
                 }).join('\n'))
                 .setTimestamp();
 
@@ -104,15 +111,14 @@ module.exports = {
             //view a specific assignment
             const id = interaction.options.getNumber('id');
             const assignment = await client.getAssignment(interaction, id);
-            console.log(assignment);
 
             const embed = new EmbedBuilder()
                 .setTitle('Assignment')
-                .setColor(0x00FF00)
+                .setColor(0x0000FF)
                 .setDescription(
                     `📌 **Assignment:** ${assignment.name}
                     🎓 **Course:** ${assignment.course}
-                    🕒 **Due: ${assignment.due}`)
+                    🕒 **Due:** ${assignment.due}`)
                 .setTimestamp();
             
             await interaction.reply({ embeds: [embed] });
@@ -121,11 +127,11 @@ module.exports = {
         if (subcommand === 'remove') {
             //remove an assignment
             const id = interaction.options.getNumber('id');
-            await client.removeAssignment(interaction, id);
+            await client.deleteAssignment(interaction, id);
 
             const embed = new EmbedBuilder()
                 .setTitle('Assignment Removed')
-                .setColor(0x00FF00)
+                .setColor(0x0000FF)
                 .setDescription(`Removed assignment: ${id}`)
                 .setTimestamp();
 
@@ -146,12 +152,12 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle('Assignment Added')
-                .setColor(0x00FF00)
+                .setColor(0x0000FF)
                 .setDescription(
                 `💡 New Assignment Alert! 📝
 
-                📌 Assignment: ${name}
-                🎓 Course: ${course}
+                📌 **Assignment:** ${name}
+                🎓 **Course:** ${course}
                 🕒 Due: ${due} 
                 
                 Get to work! 💪🏼💻🚀
