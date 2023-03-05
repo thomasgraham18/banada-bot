@@ -5,6 +5,8 @@ const customParseFormat = require("dayjs/plugin/customParseFormat");
 const advancedFormat = require("dayjs/plugin/advancedFormat");
 const humanize = require("dayjs/plugin/relativeTime");
 
+// TODO: ADD MORE ERROR CATCHING FOR USER INPUT (BAD DATA)
+
 module.exports = {
     // Command structure: 
     // /assignments [action] <name> <course> <due>
