@@ -39,7 +39,7 @@ module.exports = {
 		await client.distube.shuffle(interaction);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(`🔀 | **Songs have been shuffled**`);
 
 		interaction.editReply({ embeds: [embed] });

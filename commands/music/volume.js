@@ -47,7 +47,7 @@ module.exports = {
 		// If no volume is provided, return the current volume
 		if (!volume) {
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`Current **volume** : \`${queue.volume}\`%`);
 
 			return interaction.editReply({ embeds: [embed] });
@@ -61,7 +61,7 @@ module.exports = {
 		await client.distube.setVolume(interaction, volume);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(`🔊 | **Changed volume to:** \`${volume}\`%`);
 
 		interaction.editReply({ embeds: [embed] });

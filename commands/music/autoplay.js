@@ -41,7 +41,7 @@ module.exports = {
 			await client.distube.toggleAutoplay(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`📻 | **Autoplay has been:** \`Activated\``);
 
 			interaction.editReply({ embeds: [embed] });
@@ -49,7 +49,7 @@ module.exports = {
 			await client.distube.toggleAutoplay(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`📻 | **Autoplay has been:** \`Deactivated\``);
 
 			interaction.editReply({ embeds: [embed] });

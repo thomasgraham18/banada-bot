@@ -10,7 +10,7 @@ module.exports = async (client, queue) => {
 	if (process.env.LEAVE_FINISH == 'false') {
 		const embed = new EmbedBuilder()
 			.setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
-			.setColor('#000001');
+			.setColor(client.colour);
 
 		queue.textChannel.send({ embeds: [embed] });
 	} else if (process.env.LEAVE_FINISH == 'true') {
@@ -18,7 +18,7 @@ module.exports = async (client, queue) => {
 
 		const embed = new EmbedBuilder()
 			.setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
-			.setColor('#000001');
+			.setColor(client.colour);
 
 		queue.textChannel.send({ embeds: [embed] });
 	}

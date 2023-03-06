@@ -13,9 +13,9 @@ const {
  */
 module.exports = async (client, queue, track) => {
 	var newQueue = client.distube.getQueue(queue.id);
-	var data = wmadplayer(newQueue, track);
+	var data = musicplayer(newQueue, track, client);
 
-	const nowplay = await queue.textChannel.send(data);
+	const nowPlaying = await queue.textChannel.send(data);
 
 	const filter = (message) => {
 		if (
@@ -32,13 +32,14 @@ module.exports = async (client, queue, track) => {
 		}
 	};
 
-	const collector = nowplay.createMessageComponentCollector({
+	const collector = nowPlaying.createMessageComponentCollector({
 		filter,
 		time: 120000,
 	});
 
 	collector.on('collect', async (message) => {
 		const id = message.customId;
+
 		const queue = client.distube.getQueue(message.guild.id);
 		if (id === 'pause') {
 			// Check if queue is empty
@@ -48,15 +49,15 @@ module.exports = async (client, queue, track) => {
 			if (queue.paused) {
 				await client.distube.resume(message.guild.id);
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription(`\`⏯\` |  **Song:**  \`Resumed\``);
+					.setColor(client.colour)
+					.setDescription(`⏯ | **Song:**  \`Resumed\``);
 
 				message.reply({ embeds: [embed], ephemeral: true });
 			} else {
 				await client.distube.pause(message.guild.id);
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription(`\`⏯\` |  **Song:**  \`Paused\``);
+					.setColor(client.colour)
+					.setDescription(`⏯ | **Song:**  \`Paused\``);
 
 				message.reply({ embeds: [embed], ephemeral: true });
 			}
@@ -67,19 +68,19 @@ module.exports = async (client, queue, track) => {
 			}
 			if (queue.songs.length === 1 && queue.autoplay === false) {
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
+					.setColor(client.colour)
 					.setDescription(
-						'`🚨` | **There are no** `Songs` **in queue**'
+						'🚨 | **There are no songs in the queue!**'
 					);
 
 				message.reply({ embeds: [embed], ephemeral: true });
 			} else {
 				await client.distube.skip(message);
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription('`⏭` |  **Song:**  `Skipped`');
+					.setColor(client.colour)
+					.setDescription('⏭ | **Song:**  `Skipped`');
 
-				nowplay.edit({ components: [] });
+				nowPlaying.edit({ components: [] });
 				message.reply({ embeds: [embed], ephemeral: true });
 			}
 		} else if (id === 'stop') {
@@ -89,10 +90,10 @@ module.exports = async (client, queue, track) => {
 			}
 			await client.distube.voices.leave(message.guild);
 			const embed = new EmbedBuilder()
-				.setDescription(`\`🚫\` |  **Song:**  | \`Stopped\``)
-				.setColor('#000001');
+				.setDescription(`🛑 | **Song:**  | \`Stopped\``)
+				.setColor(client.colour);
 
-			await nowplay.edit({ components: [] });
+			await nowPlaying.edit({ components: [] });
 			message.reply({ embeds: [embed], ephemeral: true });
 		} else if (id === 'loop') {
 			// Check if queue is empty
@@ -102,15 +103,15 @@ module.exports = async (client, queue, track) => {
 			if (queue.repeatMode === 0) {
 				client.distube.setRepeatMode(message.guild.id, 1);
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription(`\`🔁\` | **Song is loop:** \`Current\``);
+					.setColor(client.colour)
+					.setDescription(`🔁 | **Song is now looping**`);
 
 				message.reply({ embeds: [embed], ephemeral: true });
 			} else {
 				client.distube.setRepeatMode(message.guild.id, 0);
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription(`\`🔁\` | **Song is unloop:** \`Current\``);
+					.setColor(client.colour)
+					.setDescription(`🔁 | **Song is no longer looping**`);
 
 				message.reply({ embeds: [embed], ephemeral: true });
 			}
@@ -121,19 +122,17 @@ module.exports = async (client, queue, track) => {
 			}
 			if (queue.previousSongs.length == 0) {
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription(
-						'`🚨` | **There are no** `Previous` **songs**'
-					);
+					.setColor(client.colour)
+					.setDescription('🚨 | **There are no previous songs!**');
 
 				message.reply({ embeds: [embed], ephemeral: true });
 			} else {
 				await client.distube.previous(message);
 				const embed = new EmbedBuilder()
-					.setColor('#000001')
-					.setDescription('`⏮` |  **Song:**  `Previous`');
+					.setColor(client.colour)
+					.setDescription('⏮ |  **Went back a song**');
 
-				await nowplay.edit({ components: [] });
+				await nowPlaying.edit({ components: [] });
 				message.reply({ embeds: [embed], ephemeral: true });
 			}
 		} else if (id === 'shuffle') {
@@ -143,8 +142,8 @@ module.exports = async (client, queue, track) => {
 			}
 			await client.distube.shuffle(message);
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(`\`🔀\` |  **Songs:**  \`Shuffled\``);
+				.setColor(client.colour)
+				.setDescription(`🔀 | **Songs have been shuffled**`);
 
 			message.reply({ embeds: [embed], ephemeral: true });
 		} else if (id === 'voldown') {
@@ -156,12 +155,10 @@ module.exports = async (client, queue, track) => {
 			await client.distube.setVolume(message, queue.volume - 10);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(
-					`\`🔊\` | **Decrease volume to:** \`${queue.volume}\`%`
+					`🔊 | **Decreased volume to:** \`${queue.volume}\`%`
 				);
-
-			console.log(`After the embed: ${embed}`);
 
 			message.reply({ embeds: [embed], ephemeral: true });
 		} else if (id === 'clear') {
@@ -173,8 +170,8 @@ module.exports = async (client, queue, track) => {
 			//await client.UpdateQueueMsg(queue);
 
 			const embed = new EmbedBuilder()
-				.setDescription(`\`🍁\` | **Queue has been:** \`Cleared\``)
-				.setColor(client.color);
+				.setDescription(`🍁 | **Queue has been cleared**`)
+				.setColor(client.colour);
 
 			message.reply({ embeds: [embed], ephemeral: true });
 		} else if (id === 'volup') {
@@ -184,9 +181,9 @@ module.exports = async (client, queue, track) => {
 			}
 			await client.distube.setVolume(message, queue.volume + 10);
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(
-					`\`🔊\` | **Increase volume to:** \`${queue.volume}\`%`
+					`🔊 | **Increased volume to:** \`${queue.volume}\`%`
 				);
 
 			message.reply({ embeds: [embed], ephemeral: true });
@@ -216,7 +213,7 @@ module.exports = async (client, queue, track) => {
 						iconURL: message.guild.iconURL({ dynamic: true }),
 					})
 					.setThumbnail(queue.songs[0].thumbnail)
-					.setColor(client.color)
+					.setColor(client.colour)
 					.setDescription(
 						`**Currently Playing:**\n**[${queue.songs[0].name}](${
 							queue.songs[0].url
@@ -243,19 +240,19 @@ module.exports = async (client, queue, track) => {
 
 	collector.on('end', async (collected, reason) => {
 		if (reason === 'time') {
-			nowplay.edit({ components: [] });
+			nowPlaying.edit({ components: [] });
 		}
 	});
 };
 
-function wmadplayer(nowQueue, nowTrack) {
+function musicplayer(nowQueue, nowTrack, client) {
 	const embed = new EmbedBuilder()
 		.setAuthor({
 			name: `Starting Playing...`,
 			iconURL: 'https://cdn.discordapp.com/emojis/741605543046807626.gif',
 		})
 		.setThumbnail(nowTrack.thumbnail)
-		.setColor('#000001')
+		.setColor(client.colour)
 		.setDescription(`**[${nowTrack.name}](${nowTrack.url})**`)
 		.addFields({
 			name: `Uploader:`,

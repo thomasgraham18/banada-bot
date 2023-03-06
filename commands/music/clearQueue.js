@@ -41,7 +41,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setDescription(`🍁 | *Queue has been:* \`Cleared\``)
-			.setColor(client.color);
+			.setColor(client.colour);
 
 		interaction.editReply({ embeds: [embed] });
 	},

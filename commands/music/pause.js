@@ -40,7 +40,7 @@ module.exports = {
 			await client.distube.resume(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`⏯ | **Song:**  \`Resumed\``);
 
 			interaction.editReply({ embeds: [embed] });
@@ -49,7 +49,7 @@ module.exports = {
 			await client.distube.pause(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`⏸️ | **Song:**  \`Paused\``);
 
 			interaction.editReply({ embeds: [embed] });

@@ -49,7 +49,7 @@ module.exports = {
 				iconURL:
 					'https://cdn.discordapp.com/emojis/741605543046807626.gif',
 			})
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(
 				`**[${queue.songs[0].name}](${queue.songs[0].url})**`
 			)

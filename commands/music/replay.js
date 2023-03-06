@@ -38,7 +38,7 @@ module.exports = {
 		await queue.seek(0);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription('🔁 | **Song:**  `Replay`');
 
 		interaction.editReply({ embeds: [embed] });

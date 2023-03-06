@@ -114,7 +114,7 @@ module.exports = {
 				name: `Song Selection...`,
 				iconURL: interaction.guild.iconURL({ dynamic: true }),
 			})
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(result)
 			.setFooter({ text: `Please response in 30s` });
 

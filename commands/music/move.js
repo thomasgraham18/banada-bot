@@ -72,7 +72,7 @@ module.exports = {
 			.setDescription(
 				`**Moved • [${song.name}](${song.url})** to ${position}`
 			)
-			.setColor(client.color);
+			.setColor(client.colour);
 
 		interaction.editReply({ embeds: [embed] });
 	},

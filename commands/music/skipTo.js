@@ -49,7 +49,7 @@ module.exports = {
 		await client.distube.jump(interaction, args);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(`⏭ | **Skip to:** ${args}`);
 
 		interaction.editReply({ embeds: [embed] });

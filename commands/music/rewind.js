@@ -50,7 +50,7 @@ module.exports = {
 					.setDescription(
 						`⏮ *Rewind to:* \`${queue.formattedCurrentTime}\``
 					)
-					.setColor(client.color);
+					.setColor(client.colour);
 
 				interaction.editReply({ embeds: [embed] });
 			} else {
@@ -65,7 +65,7 @@ module.exports = {
 				.setDescription(
 					`⏮ | **Rewinded to:** \`${queue.formattedCurrentTime}\``
 				)
-				.setColor(client.color);
+				.setColor(client.colour);
 
 			interaction.editReply({ embeds: [embed] });
 		} else {

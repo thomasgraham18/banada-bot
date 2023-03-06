@@ -40,7 +40,7 @@ module.exports = {
 			await client.distube.setRepeatMode(interaction, 0);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`🔁 | **Queue is not looping:** \`All\``);
 
 			interaction.editReply({ embeds: [embed] });
@@ -48,7 +48,7 @@ module.exports = {
 			await client.distube.setRepeatMode(interaction, 2);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(`🔁 | **Queue is looping:** \`All\``);
 
 			interaction.editReply({ embeds: [embed] });

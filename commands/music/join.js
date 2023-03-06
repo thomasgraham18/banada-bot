@@ -28,7 +28,7 @@ module.exports = {
 		await client.distube.voices.join(interaction.member.voice.channel);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(`🤟 | **Joined:** \`${channel.name}\``);
 
 		interaction.editReply({ embeds: [embed] });

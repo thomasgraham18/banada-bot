@@ -32,7 +32,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setDescription(`🛑 | **Stopped:** \`${channel.name}\``)
-			.setColor(client.color);
+			.setColor(client.colour);
 
 		interaction.editReply({ embeds: [embed] });
 	},

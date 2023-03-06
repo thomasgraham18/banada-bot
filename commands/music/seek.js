@@ -52,7 +52,7 @@ module.exports = {
 			.setDescription(
 				`⏭ | **Seeked to:** \`${value}\` seconds in the song.`
 			)
-			.setColor(client.color);
+			.setColor(client.colour);
 
 		interaction.editReply({ embeds: [embed] });
 	},

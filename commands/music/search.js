@@ -98,12 +98,13 @@ module.exports = {
 		const res = await ytsr(string, { safeSearch: true, limit: 5 });
 
 		let index = 1;
+
 		const result = res.items
 			.slice(0, 5)
 			.map(
 				(x) =>
 					`**(${index++}.) [${x.name}](${x.url})** Author: \`${
-						x.author
+						x.author.name
 					}\``
 			)
 			.join('\n');
@@ -113,7 +114,7 @@ module.exports = {
 				name: `Song Selection...`,
 				iconURL: interaction.guild.iconURL({ dynamic: true }),
 			})
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(result)
 			.setFooter({ text: `Please response in 30s` });
 
