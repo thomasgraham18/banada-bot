@@ -30,6 +30,7 @@ WMADHelper is a feature rich DiscordJS v14 implementation that is:
 WMADHelper uses a number of open source projects to work properly:
 
 -   [DiscordJS v14] - The main tech!
+-   [DayJS] - Datetime calculations and formatting!
 -   [Chalk] - Pretty errors and initializaion!
 -   [Chillout] - Promise replacer to improve load times, resources, etc.
 -   [Delay] - Used to an async delay.
@@ -83,6 +84,7 @@ WMADHelper uses a number of open source projects to work properly:
 [jacques]: https://github.com/jacques-jd
 [git-repo-url]: https://github.com/thomasgraham18/AT-Project
 [discordjs v14]: https://discord.js.org/#/
+[dayjs]: https://day.js.org
 [chalk]: https://www.npmjs.com/package/chalk
 [chillout]: https://www.npmjs.com/package/chillout
 [delay]: https://www.npmjs.com/package/delay
