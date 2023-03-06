@@ -1,16 +1,14 @@
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const dayjs = require("dayjs");
-const duration = require("dayjs/plugin/duration");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 const advancedFormat = require("dayjs/plugin/advancedFormat");
-const humanize = require("dayjs/plugin/relativeTime");
-
-// TODO: ADD MORE ERROR CATCHING FOR USER INPUT (BAD DATA)
 
 module.exports = {
     // Command structure: 
     // /assignments [action] <name> <course> <due>
     // actions are subcommands
+
+    //#region CommandBuilder (Command & Subcommand Structure)
   data: new SlashCommandBuilder()
     .setName("assignments")
     .setDescription("Assignment CRUD")
@@ -69,8 +67,8 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("remove")
-        .setDescription("Remove an assignment")
+        .setName("complete")
+        .setDescription("Complete an assignment and remove it from the list!")
         .addNumberOption((option) =>
           option
             .setName("id")
@@ -94,8 +92,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand.setName("list").setDescription("View all assignments")
     ),
-
-  // TODO: CHANGE "REMOVE" TO "COMPLETE".
+    //#endregion
 
   async execute(interaction, client) {
     // ? The subcommand is the action we're doing (add/view/all/remove/edit)
@@ -109,6 +106,7 @@ module.exports = {
 
       const assignments = await client.getAllAssignments();
 
+      // ? EmbedBuilders return an embed to polish data
       const embed = new EmbedBuilder()
         .setTitle("Current Assignments")
         .setColor(0xA020F0)
@@ -129,9 +127,6 @@ module.exports = {
         )
         .setTimestamp();
 
-      //🕒 **Due:** ${dayjs(assignment.data.due)
-      //    .format('MMMM Do')}
-
       await interaction.reply({ embeds: [embed] });
     }
 
@@ -139,7 +134,7 @@ module.exports = {
       //view a specific assignment
       const id = interaction.options.getNumber("id");
       const assignment = await client.getAssignment(interaction, id);
-      const due = dayjs(assignment.due)
+      const due = dayjs(assignment.due);
 
       const embed = new EmbedBuilder()
         .setTitle(`🚀🎉📝 Hey there! Check out the new assignment`)
@@ -154,7 +149,7 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
     }
 
-    if (subcommand === "remove") {
+    if (subcommand === "complete") {
       //remove an assignment
       const id = interaction.options.getNumber("id");
       const assignment = await client.getAssignment(interaction, id);
@@ -179,7 +174,6 @@ module.exports = {
     }
 
     //add, edit are more complicated
-    // TODO: TRIM ORDINAL NOTATION (LETTERS FROM DATE)
     if (subcommand === "add") {
       //add an assignment
       const name = interaction.options.getString("name");
@@ -188,17 +182,23 @@ module.exports = {
 
       let due = dayjs(date)
 
+      console.log(due);
+
       if (due.isValid()) {
-        if(due.year() != dayjs().year()) {
-          console.log("TEST");
-          //then geto ut of here 
+        if(due.year() < dayjs().year()) {
           due = due.set('year', dayjs().year())
-          console.log(due);
         }
+
+        due = due //make sure it's 11:59pm
+          .set('hour', 23)
+          .set('minute', 59)
+          .set('second', 59);
       }
       
       await client.addAssignment(interaction, name, course, due);
 
+      //client.addAssignment catches an error and replies to the 
+      //interaction. If it's already replied, we don't want to reply again
       if (interaction.replied) return;
 
       const embed = new EmbedBuilder()
@@ -218,7 +218,6 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
     }
 
-    // TODO: TRIM ORDINAL NOTATION (LETTERS FROM DATE)
     if (subcommand === "edit") {
       //edit an assignment
       const id = interaction.options.getNumber("id");
@@ -229,15 +228,21 @@ module.exports = {
       let due = dayjs(date)
 
       if (due.isValid()) {
-        if(due.year() != dayjs().year()) {
-          console.log("TEST");
-          //then geto ut of here 
+        if(due.year() < dayjs().year()) {
           due = due.set('year', dayjs().year())
-          console.log(due);
         }
+
+        due = due //Make sure it's 11:59pm
+          .set('hour', 23)
+          .set('minute', 59)
+          .set('second', 59);
       }
 
       await client.editAssignment(interaction, id, name, course, due);
+      
+      //client.addAssignment catches an error and replies to the 
+      //interaction. If it's already replied, we don't want to reply again
+      if (interaction.replied) return;
       
       const assignment = await client.getAssignment(interaction, id);
       const daysJSdue = dayjs(assignment.due);
