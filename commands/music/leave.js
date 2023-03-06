@@ -13,14 +13,6 @@ module.exports = {
 	async execute(interaction, client) {
 		await interaction.deferReply({ ephemeral: false });
 
-		const queue = client.distube.getQueue(interaction);
-
-		// Check if queue is empty
-		if (!queue)
-			return interaction.editReply(
-				`There is nothing in the queue right now!`
-			);
-
 		const { channel } = interaction.member.voice;
 
 		// Check if user is in a voice channel
@@ -39,7 +31,7 @@ module.exports = {
 		await client.distube.voices.leave(interaction.guild);
 
 		const embed = new EmbedBuilder()
-			.setDescription(`\`🚫\` | **Left:** | \`${channel.name}\``)
+			.setDescription(`💨 | **Left:** \`${channel.name}\``)
 			.setColor(client.color);
 
 		interaction.editReply({ embeds: [embed] });

@@ -1,32 +1,17 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 /**
- * @description Skips to a certain song in the queue.
+ * @description Stop the bot
  */
 module.exports = {
 	// Slash command properties
 	data: new SlashCommandBuilder()
-		.setName('skipto')
-		.setDescription('Skips to a certain song in the queue.')
-		.addIntegerOption((option) =>
-			option
-				.setName('position')
-				.setDescription('The position of the song in the queue.')
-				.setRequired(true)
-		),
+		.setName('stop')
+		.setDescription('Stop the bot'),
+
 	// Command execution
 	async execute(interaction, client) {
 		await interaction.deferReply({ ephemeral: false });
-
-		const args = interaction.options.getInteger('position');
-
-		const queue = client.distube.getQueue(interaction);
-
-		// Check if queue is empty
-		if (!queue)
-			return interaction.editReply(
-				`There is nothing in the queue right now!`
-			);
 
 		const { channel } = interaction.member.voice;
 
@@ -43,14 +28,11 @@ module.exports = {
 				'You are not in the same voice channel as me!'
 			);
 
-		if (args > queue.songs.length || (args && !queue.songs[args]))
-			return interaction.editReply('Song not found.');
-
-		await client.distube.jump(interaction, args);
+		await client.distube.stop(interaction.guild);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
-			.setDescription(`⏭ | **Skipto:** ${args}`);
+			.setDescription(`🛑 | **Stopped:** \`${channel.name}\``)
+			.setColor(client.color);
 
 		interaction.editReply({ embeds: [embed] });
 	},

@@ -63,7 +63,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setColor(client.color)
-			.setDescription(`\`🔊\` | **Change volume to:** \`${volume}\`%`);
+			.setDescription(`🔊 | **Change volume to:** \`${volume}\`%`);
 
 		interaction.editReply({ embeds: [embed] });
 	},

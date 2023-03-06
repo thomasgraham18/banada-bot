@@ -39,7 +39,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setColor(client.color)
-			.setDescription('`🔁` |  **Song:**  `Replay`');
+			.setDescription('🔁 | **Song:**  `Replay`');
 
 		interaction.editReply({ embeds: [embed] });
 	},

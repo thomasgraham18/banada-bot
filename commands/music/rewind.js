@@ -48,7 +48,7 @@ module.exports = {
 
 				const embed = new EmbedBuilder()
 					.setDescription(
-						`\`⏮\` | *Rewind to:* \`${queue.formattedCurrentTime}\``
+						`⏮ *Rewind to:* \`${queue.formattedCurrentTime}\``
 					)
 					.setColor(client.color);
 
@@ -63,7 +63,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setDescription(
-					`\`⏮\` | *Rewind to:* \`${queue.formattedCurrentTime}\``
+					`⏮ | **Rewinded to:** \`${queue.formattedCurrentTime}\``
 				)
 				.setColor(client.color);
 

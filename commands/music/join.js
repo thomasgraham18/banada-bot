@@ -27,7 +27,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setColor(client.color)
-			.setDescription(`\`🔊\` | **Joined:** \`${channel.name}\``);
+			.setDescription(`🤟 | **Joined:** \`${channel.name}\``);
 
 		interaction.editReply({ embeds: [embed] });
 	},

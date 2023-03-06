@@ -41,7 +41,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription(`\`⏯\` |  **Song:**  \`Resumed\``);
+				.setDescription(`⏯ | **Song:**  \`Resumed\``);
 
 			interaction.editReply({ embeds: [embed] });
 			//await client.UpdateQueueMsg(queue);
@@ -50,7 +50,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription(`\`⏸️\` |  **Song:**  \`Paused\``);
+				.setDescription(`⏸️ | **Song:**  \`Paused\``);
 
 			interaction.editReply({ embeds: [embed] });
 			//await client.UpdateQueueMsg(queue);

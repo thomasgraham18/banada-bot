@@ -40,7 +40,7 @@ module.exports = {
 		//await client.UpdateQueueMsg(queue);
 
 		const embed = new EmbedBuilder()
-			.setDescription(`\`🍁\` | *Queue has been:* \`Cleared\``)
+			.setDescription(`🍁 | *Queue has been:* \`Cleared\``)
 			.setColor(client.color);
 
 		interaction.editReply({ embeds: [embed] });

@@ -40,7 +40,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setColor(client.color)
-			.setDescription(`\`🔀\` |  **Songs:**  \`Shuffled\``);
+			.setDescription(`🔀 | **Songs:**  \`Shuffled\``);
 
 		interaction.editReply({ embeds: [embed] });
 	},

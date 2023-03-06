@@ -51,7 +51,7 @@ module.exports = {
 
 				const embed = new EmbedBuilder()
 					.setDescription(
-						`\`⏭\` | *Forward to:* \`${queue.formattedCurrentTime}\``
+						`⏭ | **Forwarded to:** \`${queue.formattedCurrentTime}\``
 					)
 					.setColor(client.color);
 
@@ -66,7 +66,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setDescription(
-					`\`⏭\` | *Forward to:* \`${queue.formattedCurrentTime}\``
+					`⏭ | *Forward to:* \`${queue.formattedCurrentTime}\``
 				)
 				.setColor(client.color);
 

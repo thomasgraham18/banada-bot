@@ -42,7 +42,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription(`\`📻\` | *Autoplay has been:* \`Activated\``);
+				.setDescription(`\`📻\` *Autoplay has been:* \`Activated\``);
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
@@ -51,7 +51,7 @@ module.exports = {
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
 				.setDescription(
-					`\`📻\` | *Autoplay has been:* \`Deactivated\``
+					`📻 | *Autoplay has been:* \`Deactivated\``
 				);
 
 			interaction.editReply({ embeds: [embed] });

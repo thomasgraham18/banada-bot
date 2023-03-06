@@ -39,7 +39,7 @@ module.exports = {
 		if (queue.previousSongs.length == 0) {
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription('`🚨` | **There are no** `Previous` **songs**');
+				.setDescription('🚨 **There are no** `Previous` **songs**');
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
@@ -47,7 +47,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription('`⏮` |  **Song:**  `Previous`');
+				.setDescription('⏮ | **Song:**  `Previous`');
 
 			interaction.editReply({ embeds: [embed] });
 		}

@@ -49,7 +49,7 @@ module.exports = {
 		await queue.seek(value);
 
 		const embed = new EmbedBuilder()
-			.setDescription(`\`⏭\` | *Seeked to:* \`${value}\``)
+			.setDescription(`⏭ | **Seeked to:** \`${value}\` seconds in the song.`)
 			.setColor(client.color);
 
 		interaction.editReply({ embeds: [embed] });
