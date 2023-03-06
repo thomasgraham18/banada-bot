@@ -1,11 +1,7 @@
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const dayjs = require("dayjs");
-const duration = require("dayjs/plugin/duration");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 const advancedFormat = require("dayjs/plugin/advancedFormat");
-const humanize = require("dayjs/plugin/relativeTime");
-
-// TODO: ADD MORE ERROR CATCHING FOR USER INPUT (BAD DATA)
 
 module.exports = {
     // Command structure: 
@@ -69,8 +65,8 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("remove")
-        .setDescription("Remove an assignment")
+        .setName("complete")
+        .setDescription("Complete an assignment and remove it from the list!")
         .addNumberOption((option) =>
           option
             .setName("id")
@@ -95,7 +91,6 @@ module.exports = {
       subcommand.setName("list").setDescription("View all assignments")
     ),
 
-  // TODO: CHANGE "REMOVE" TO "COMPLETE".
 
   async execute(interaction, client) {
     // ? The subcommand is the action we're doing (add/view/all/remove/edit)
@@ -154,7 +149,7 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
     }
 
-    if (subcommand === "remove") {
+    if (subcommand === "complete") {
       //remove an assignment
       const id = interaction.options.getNumber("id");
       const assignment = await client.getAssignment(interaction, id);
@@ -179,7 +174,6 @@ module.exports = {
     }
 
     //add, edit are more complicated
-    // TODO: TRIM ORDINAL NOTATION (LETTERS FROM DATE)
     if (subcommand === "add") {
       //add an assignment
       const name = interaction.options.getString("name");
@@ -188,13 +182,17 @@ module.exports = {
 
       let due = dayjs(date)
 
+      console.log(due);
+
       if (due.isValid()) {
-        if(due.year() != dayjs().year()) {
-          console.log("TEST");
-          //then geto ut of here 
+        if(due.year() < dayjs().year()) {
           due = due.set('year', dayjs().year())
-          console.log(due);
         }
+
+        due = due //make sure it's 11:59pm
+          .set('hour', 23)
+          .set('minute', 59)
+          .set('second', 59);
       }
       
       await client.addAssignment(interaction, name, course, due);
@@ -218,7 +216,6 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
     }
 
-    // TODO: TRIM ORDINAL NOTATION (LETTERS FROM DATE)
     if (subcommand === "edit") {
       //edit an assignment
       const id = interaction.options.getNumber("id");
@@ -229,15 +226,19 @@ module.exports = {
       let due = dayjs(date)
 
       if (due.isValid()) {
-        if(due.year() != dayjs().year()) {
-          console.log("TEST");
-          //then geto ut of here 
+        if(due.year() < dayjs().year()) {
           due = due.set('year', dayjs().year())
-          console.log(due);
         }
+
+        due = due //Make sure it's 11:59pm
+          .set('hour', 23)
+          .set('minute', 59)
+          .set('second', 59);
       }
 
       await client.editAssignment(interaction, id, name, course, due);
+
+      if (interaction.replied) return;
       
       const assignment = await client.getAssignment(interaction, id);
       const daysJSdue = dayjs(assignment.due);

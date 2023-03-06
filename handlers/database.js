@@ -38,9 +38,29 @@ module.exports = async (client) => {
 			}
 		);
 
-		if(due == "Invalid Date") {
+		if(!due.isValid()) {
 			await interaction.reply({
-				content: 'Invalid Date',
+				content: `**Invalid date!**\n*Tip: You can use the following formats:*\n> March 1
+				> 03/01
+				> March 1 2023
+				> 03/01/2023
+				> 03-01`,
+				ephemeral: true
+			});
+			return;
+		}
+		
+		if(name.length > 50) {
+			await interaction.reply({
+				content: `**Assignment name is too long!**\n*Please don't use more than 50 characters*\n*You used ${name.length} characters*`,
+				ephemeral: true
+			});
+			return;
+		}
+
+		if(course.length > 50) {
+			await interaction.reply({
+				content: `**Course name is too long!**\n*Please don't use more than 50 characters*\n*You used ${course.length} characters*`,
 				ephemeral: true
 			});
 			return;
@@ -91,7 +111,35 @@ module.exports = async (client) => {
 
 		if(!name) name = assignment.name;
 		if(!course) course = assignment.course;
-		if(due == null || isNaN(due)) due = assignment.due;
+		if(!due.isValid()) due = assignment.due;
+
+		if(!due.isValid()) {
+			await interaction.reply({
+				content: `**Invalid date!**\n*Tip: You can use the following formats:*\n> March 1
+				> 03/01
+				> March 1 2023
+				> 03/01/2023
+				> 03-01`,
+				ephemeral: true
+			});
+			return;
+		}
+
+		if(name.length > 50) {
+			await interaction.reply({
+				content: `**Assignment name is too long!**\n*Please don't use more than 50 characters*\n*You used ${name.length} characters*`,
+				ephemeral: true
+			});
+			return;
+		}
+
+		if(course.length > 50) {
+			await interaction.reply({
+				content: `**Course name is too long!**\n*Please don't use more than 50 characters*\n*You used ${course.length} characters*`,
+				ephemeral: true
+			});
+			return;
+		}
 
 		console.log("due: " + due);
 		console.log("assignment.due: " + assignment.due)
