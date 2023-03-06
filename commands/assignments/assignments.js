@@ -7,6 +7,8 @@ module.exports = {
     // Command structure: 
     // /assignments [action] <name> <course> <due>
     // actions are subcommands
+
+    //#region CommandBuilder (Command & Subcommand Structure)
   data: new SlashCommandBuilder()
     .setName("assignments")
     .setDescription("Assignment CRUD")
@@ -90,7 +92,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand.setName("list").setDescription("View all assignments")
     ),
-
+    //#endregion
 
   async execute(interaction, client) {
     // ? The subcommand is the action we're doing (add/view/all/remove/edit)
@@ -104,6 +106,7 @@ module.exports = {
 
       const assignments = await client.getAllAssignments();
 
+      // ? EmbedBuilders return an embed to polish data
       const embed = new EmbedBuilder()
         .setTitle("Current Assignments")
         .setColor(0xA020F0)
@@ -124,9 +127,6 @@ module.exports = {
         )
         .setTimestamp();
 
-      //🕒 **Due:** ${dayjs(assignment.data.due)
-      //    .format('MMMM Do')}
-
       await interaction.reply({ embeds: [embed] });
     }
 
@@ -134,7 +134,7 @@ module.exports = {
       //view a specific assignment
       const id = interaction.options.getNumber("id");
       const assignment = await client.getAssignment(interaction, id);
-      const due = dayjs(assignment.due)
+      const due = dayjs(assignment.due);
 
       const embed = new EmbedBuilder()
         .setTitle(`🚀🎉📝 Hey there! Check out the new assignment`)
@@ -197,6 +197,8 @@ module.exports = {
       
       await client.addAssignment(interaction, name, course, due);
 
+      //client.addAssignment catches an error and replies to the 
+      //interaction. If it's already replied, we don't want to reply again
       if (interaction.replied) return;
 
       const embed = new EmbedBuilder()
@@ -237,7 +239,9 @@ module.exports = {
       }
 
       await client.editAssignment(interaction, id, name, course, due);
-
+      
+      //client.addAssignment catches an error and replies to the 
+      //interaction. If it's already replied, we don't want to reply again
       if (interaction.replied) return;
       
       const assignment = await client.getAssignment(interaction, id);

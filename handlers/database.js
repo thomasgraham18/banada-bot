@@ -20,6 +20,34 @@ module.exports = async (client) => {
 		});
 	};
 
+	client.getAllAssignments = async function () {
+		const db = new Database('./models/assignments.json', {
+			databaseInObject: true
+		});
+
+		const results = await db.all();
+
+		return results;
+	};
+
+	client.getAssignment = async function (interaction, id) {
+		const db = new Database('./models/assignments.json', {
+			databaseInObject: true
+		});
+
+		const results = await db.get(id.toString());
+
+		return results;
+	};
+
+	client.deleteAssignment = async function (interaction, id) {
+		const db = new Database('./models/assignments.json', {
+			databaseInObject: true
+		});
+
+		await db.delete(id.toString());
+	};
+
 	client.addAssignment = async function (interaction, name, course, due) {
 		const db = new Database('./models/assignments.json', {
 			databaseInObject: true
@@ -71,34 +99,6 @@ module.exports = async (client) => {
 			course: course,
 			due: due
 		});
-	};
-
-	client.getAllAssignments = async function () {
-		const db = new Database('./models/assignments.json', {
-			databaseInObject: true
-		});
-
-		const results = await db.all();
-
-		return results;
-	};
-
-	client.getAssignment = async function (interaction, id) {
-		const db = new Database('./models/assignments.json', {
-			databaseInObject: true
-		});
-
-		const results = await db.get(id.toString());
-
-		return results;
-	};
-
-	client.deleteAssignment = async function (interaction, id) {
-		const db = new Database('./models/assignments.json', {
-			databaseInObject: true
-		});
-
-		await db.delete(id.toString());
 	};
 
 	client.editAssignment = async function (interaction, id, name, course, due) {
