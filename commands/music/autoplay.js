@@ -41,18 +41,16 @@ module.exports = {
 			await client.distube.toggleAutoplay(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(`\`📻\` | *Autoplay has been:* \`Activated\``);
+				.setColor(client.colour)
+				.setDescription(`📻 | **Autoplay has been:** \`Activated\``);
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
 			await client.distube.toggleAutoplay(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(
-					`\`📻\` | *Autoplay has been:* \`Deactivated\``
-				);
+				.setColor(client.colour)
+				.setDescription(`📻 | **Autoplay has been:** \`Deactivated\``);
 
 			interaction.editReply({ embeds: [embed] });
 		}

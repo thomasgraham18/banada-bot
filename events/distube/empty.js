@@ -7,7 +7,7 @@ const { EmbedBuilder } = require('discord.js');
  */
 module.exports = async (client, queue) => {
 	const embed = new EmbedBuilder()
-		.setColor('#000001')
+		.setColor(client.colour)
 		.setDescription(`**Channel is Empty!**`);
 
 	queue.textChannel.send({ embeds: [embed] });

@@ -20,7 +20,7 @@ module.exports = async (client, queue, song) => {
 		.setDescription(
 			`**Queued • [${song.name}](${song.url})** \`${song.formattedDuration}\` • ${song.user}`
 		)
-		.setColor('#000001');
+		.setColor(client.colour);
 
 	await msg.edit({ content: ' ', embeds: [embed] });
 };

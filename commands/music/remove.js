@@ -1,7 +1,4 @@
-const {
-	EmbedBuilder,
-	SlashCommandBuilder,
-} = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 /**
  * @description Remove a song from the queue
@@ -58,7 +55,7 @@ module.exports = {
 		await queue.songs.splice(tracks, 1);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
+			.setColor(client.colour)
 			.setDescription(
 				`**Removed • [${song.name}](${song.url})** \`${song.formattedDuration}\` • ${song.user}`
 			);

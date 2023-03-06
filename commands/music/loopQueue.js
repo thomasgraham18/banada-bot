@@ -40,16 +40,16 @@ module.exports = {
 			await client.distube.setRepeatMode(interaction, 0);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(`\`🔁\` | **Song is unloop:** \`All\``);
+				.setColor(client.colour)
+				.setDescription(`🔁 | **Queue is not looping:** \`All\``);
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
 			await client.distube.setRepeatMode(interaction, 2);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(`\`🔁\` | **Song is loop:** \`All\``);
+				.setColor(client.colour)
+				.setDescription(`🔁 | **Queue is looping:** \`All\``);
 
 			interaction.editReply({ embeds: [embed] });
 		}

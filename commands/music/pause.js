@@ -40,8 +40,8 @@ module.exports = {
 			await client.distube.resume(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(`\`⏯\` |  **Song:**  \`Resumed\``);
+				.setColor(client.colour)
+				.setDescription(`⏯ | **Song:**  \`Resumed\``);
 
 			interaction.editReply({ embeds: [embed] });
 			//await client.UpdateQueueMsg(queue);
@@ -49,8 +49,8 @@ module.exports = {
 			await client.distube.pause(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription(`\`⏸️\` |  **Song:**  \`Paused\``);
+				.setColor(client.colour)
+				.setDescription(`⏸️ | **Song:**  \`Paused\``);
 
 			interaction.editReply({ embeds: [embed] });
 			//await client.UpdateQueueMsg(queue);

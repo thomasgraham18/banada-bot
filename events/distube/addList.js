@@ -18,7 +18,7 @@ module.exports = async (client, queue, playlist) => {
 		.setDescription(
 			`**Queued • [${playlist.name}](${playlist.url})** \`${queue.formattedDuration}\` (${playlist.songs.length} tracks) • ${playlist.user}`
 		)
-		.setColor('#000001');
+		.setColor(client.colour);
 
 	await msg.edit({ content: ' ', embeds: [embed] });
 };
