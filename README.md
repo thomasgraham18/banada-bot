@@ -13,6 +13,7 @@ WMADHelper is a feature rich DiscordJS v14 implementation that is:
 
 ## 📑 Implemented Features
 
+-   [x] Assignments List
 -   [x] Music Player
 -   [x] YouTube Support
 -   [x] SoundCloud Support
@@ -20,7 +21,7 @@ WMADHelper is a feature rich DiscordJS v14 implementation that is:
 
 ## 🛠️ Possible Future Features
 
--   [ ] Assignments
+-   [ ] Embed Builder
 -   [ ] Moderation
 -   [ ] Utility
 
@@ -37,6 +38,8 @@ WMADHelper uses a number of open source projects to work properly:
 -   [st.db] - Quick and easy JSON databases.
 
 ## 🗨️ Command list
+
+### 🎶 Music
 
 -   [x] 247
 -   [x] autoplay
@@ -65,6 +68,15 @@ WMADHelper uses a number of open source projects to work properly:
 -   [x] skip
 -   [x] skipTo
 -   [x] volume
+
+
+### 📝 Assignments
+
+-   [x] add
+-   [x] edit
+-   [x] list
+-   [x] remove
+-   [x] view
 
 [//]: #
 [thomas]: https://github.com/thomasgraham18
