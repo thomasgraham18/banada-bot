@@ -42,7 +42,6 @@ WMADHelper uses a number of open source projects to work properly:
 
 ### 🎶 Music
 
--   [x] 247
 -   [x] autoplay
 -   [x] foward
 -   [x] join
