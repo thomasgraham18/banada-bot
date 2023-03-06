@@ -41,7 +41,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription(`\`🔁\` **Song is unloop:** \`All\``);
+				.setDescription(`🔁 | **Queue is not looping:** \`All\``);
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
@@ -49,7 +49,7 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription(`🔁 | **Song is loop:** \`All\``);
+				.setDescription(`🔁 | **Queue is looping:** \`All\``);
 
 			interaction.editReply({ embeds: [embed] });
 		}

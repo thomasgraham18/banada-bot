@@ -1,7 +1,4 @@
-const {
-	EmbedBuilder,
-	SlashCommandBuilder,
-} = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 /**
  * @description Remove a song from the queue

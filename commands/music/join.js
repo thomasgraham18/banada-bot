@@ -15,7 +15,9 @@ module.exports = {
 
 		const queue = client.distube.getQueue(interaction);
 		if (queue)
-			return interaction.editReply(`I already playing in voice channel.`);
+			return interaction.editReply(
+				`I am already playing in a voice channel.`
+			);
 
 		const { channel } = interaction.member.voice;
 

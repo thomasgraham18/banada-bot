@@ -35,7 +35,7 @@ module.exports = {
 				'You are not in the same voice channel as me!'
 			);
 
-		const uni = `${queue.songs[0].playing ? '⏸️ |' : '🔴 |'}`;
+		const emojie = `${queue.songs[0].playing ? '⏸️ |' : '🔴 |'}`;
 
 		const part = Math.floor(
 			(queue.currentTime / queue.songs[0].duration) * 30
@@ -81,7 +81,7 @@ module.exports = {
 			})
 			.addFields({
 				name: `Current Duration: \`[${queue.formattedCurrentTime} / ${queue.songs[0].formattedDuration}]\``,
-				value: `\`\`\`${uni} ${
+				value: `\`\`\`${emojie} ${
 					'─'.repeat(part) + '🎶' + '─'.repeat(30 - part)
 				}\`\`\``,
 				inline: false,

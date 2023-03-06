@@ -45,7 +45,7 @@ module.exports = {
 				.has(PermissionsBitField.Flags.Connect)
 		)
 			return interaction.editReply(
-				`I don't have permission to \`CONNECT\` in ${channel.name} to join voice!`
+				`I don't have permission to \`CONNECT\` to ${channel.name}!`
 			);
 
 		if (
@@ -54,7 +54,7 @@ module.exports = {
 				.has(PermissionsBitField.Flags.Speak)
 		)
 			return interaction.editReply(
-				`I don't have permission \`SPEAK\` in ${channel.name}!`
+				`I don't have permission to \`SPEAK\` in ${channel.name}!`
 			);
 
 		const row = new ActionRowBuilder()

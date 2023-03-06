@@ -60,10 +60,9 @@ module.exports = {
 
 		await client.distube.setVolume(interaction, volume);
 
-
 		const embed = new EmbedBuilder()
 			.setColor(client.color)
-			.setDescription(`🔊 | **Change volume to:** \`${volume}\`%`);
+			.setDescription(`🔊 | **Changed volume to:** \`${volume}\`%`);
 
 		interaction.editReply({ embeds: [embed] });
 	},

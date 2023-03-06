@@ -51,10 +51,12 @@ module.exports = {
 			);
 
 		if (tracks == 0)
-			return interaction.editReply(`Cannot move a song already playing.`);
+			return interaction.editReply(
+				`Cannot move song, it's already playing.`
+			);
 		if (position == 0)
 			return interaction.editReply(
-				`Cannot move to this position a song already playing.`
+				`Cannot move to this position, song already playing.`
 			);
 		if (tracks > queue.songs.length)
 			return interaction.editReply(`Queue | Song not found.`);

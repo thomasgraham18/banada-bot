@@ -50,7 +50,7 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setColor(client.color)
-			.setDescription(`⏭ | **Skipto:** ${args}`);
+			.setDescription(`⏭ | **Skip to:** ${args}`);
 
 		interaction.editReply({ embeds: [embed] });
 	},

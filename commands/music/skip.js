@@ -37,7 +37,7 @@ module.exports = {
 		if (queue.songs.length === 1 && queue.autoplay === false) {
 			const embed = new EmbedBuilder()
 				.setColor(client.color)
-				.setDescription('🚨 | **There are no** `Songs` **in queue**');
+				.setDescription('🚨 | **There are no songs in queue**');
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
