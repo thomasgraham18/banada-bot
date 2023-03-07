@@ -1,11 +1,11 @@
-# 👋 WMAD Helper
+# 🍁 Banada Bot
 
 Built by:
 
 -   [Thomas]
 -   [Jacques]
 
-WMADHelper is a feature rich DiscordJS v14 implementation that is:
+Banada Bot is a feature rich DiscordJS v14 implementation that is:
 
 -   👟Fast👟
 -   ⚡Efficient⚡
@@ -78,6 +78,16 @@ WMADHelper uses a number of open source projects to work properly:
 -   [x] remove
 -   [x] view
 
+
+## How we learned:
+
+- [Discord.js Guide]
+- [DisTube Example]
+- [ChatGPT]
+
+& and of course, the documentation linked above for each NPM module.
+
+
 [//]: #
 [thomas]: https://github.com/thomasgraham18
 [jacques]: https://github.com/jacques-jd
@@ -90,3 +100,6 @@ WMADHelper uses a number of open source projects to work properly:
 [distube]: https://www.npmjs.com/package/distube
 [ffmpeg]: https://ffmpeg.org
 [st.db]: https://www.npmjs.com/package/st.db
+[Discord.js Guide]: https://discordjs.guide
+[DisTube Example]: https://github.com/distubejs/example
+[ChatGPT]: https://chat.openai.com/chat
