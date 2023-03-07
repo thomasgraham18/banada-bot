@@ -44,7 +44,6 @@ module.exports = {
 				.setDescription(`⏯ | **Song:**  \`Resumed\``);
 
 			interaction.editReply({ embeds: [embed] });
-			//await client.UpdateQueueMsg(queue);
 		} else {
 			await client.distube.pause(interaction);
 
@@ -53,7 +52,6 @@ module.exports = {
 				.setDescription(`⏸️ | **Song:**  \`Paused\``);
 
 			interaction.editReply({ embeds: [embed] });
-			//await client.UpdateQueueMsg(queue);
 		}
 	},
 };

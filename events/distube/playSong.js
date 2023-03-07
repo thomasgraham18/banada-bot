@@ -167,7 +167,6 @@ module.exports = async (client, queue, track) => {
 				collector.stop();
 			}
 			await queue.songs.splice(1, queue.songs.length);
-			//await client.UpdateQueueMsg(queue);
 
 			const embed = new EmbedBuilder()
 				.setDescription(`🍁 | **Queue has been cleared**`)

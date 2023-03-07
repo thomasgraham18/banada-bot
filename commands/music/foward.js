@@ -44,7 +44,8 @@ module.exports = {
 			);
 
 		const song = queue.songs[0];
-
+		
+		// Check for value and send embed accordingly
 		if (!value) {
 			if (queue.currentTime + 10 < song.duration) {
 				await queue.seek(queue.currentTime + 10);
@@ -62,8 +63,10 @@ module.exports = {
 				);
 			}
 		} else if (queue.currentTime + value < song.duration) {
+			// Seek to the new time
 			await queue.seek(queue.currentTime + value);
 
+			// Embed
 			const embed = new EmbedBuilder()
 				.setDescription(
 					`⏭ | *Forwarded to:* \`${queue.formattedCurrentTime}\``

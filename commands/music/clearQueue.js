@@ -37,8 +37,8 @@ module.exports = {
 
 		// Clear the queue and update it
 		await queue.songs.splice(1, queue.songs.length);
-		//await client.UpdateQueueMsg(queue);
 
+		// Embed
 		const embed = new EmbedBuilder()
 			.setDescription(`🍁 | *Queue has been:* \`Cleared\``)
 			.setColor(client.colour);
