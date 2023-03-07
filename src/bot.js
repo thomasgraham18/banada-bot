@@ -3,6 +3,7 @@ require('dotenv').config();
 const { DisTube } = require('distube');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { SpotifyPlugin } = require('@distube/spotify');
+const { green } = require('chalk');
 
 class BotClient extends Client {
 	constructor() {
@@ -29,6 +30,9 @@ class BotClient extends Client {
 		this.token = process.env.DISCORD_TOKEN;
 		this.owner = process.env.OWNER_ID;
 		this.colour = process.env.EMBED_COLOUR;
+		this.spotifyToggle = process.env.SPOTIFY_TOGGLE;
+		this.spotifyID = process.env.SPOTIFY_ID;
+		this.spotifySecret = process.env.SPOTIFY_SECRET;
 
 		const client = this;
 
@@ -38,17 +42,7 @@ class BotClient extends Client {
 			emptyCooldown: 60,
 			leaveOnFinish: false,
 			leaveOnStop: false,
-			plugins: [
-				new SoundCloudPlugin(),
-				new SpotifyPlugin({
-					emitEventsAfterFetching: true,
-					api: {
-						clientId: process.env.SPOTIFY_ID,
-						clientSecret: process.env.SPOTIFY_SECRET,
-					},
-					//parallel: false,
-				}),
-			],
+			plugins: [new SoundCloudPlugin(), toggleSpotify(client)],
 		});
 
 		this.commands = new Collection();
@@ -67,3 +61,18 @@ class BotClient extends Client {
 }
 
 module.exports = BotClient;
+
+function toggleSpotify(client) {
+	if (client.spotifyToggle == 'true') {
+		console.log(green('[Spotify]') + ' Spotify extra tracks enabled');
+		return new SpotifyPlugin({
+			emitEventsAfterFetching: true,
+			api: {
+				clientId: client.spotifyID,
+				clientSecret: client.spotifySecret,
+			},
+		});
+	} else {
+		return new SpotifyPlugin({ emitEventAfterFetching: true });
+	}
+}
