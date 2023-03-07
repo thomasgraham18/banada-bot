@@ -1,11 +1,11 @@
-# 👋 WMAD Helper
+# 🍁 Banada Bot
 
 Built by:
 
 -   [Thomas]
 -   [Jacques]
 
-WMADHelper is a feature rich DiscordJS v14 implementation that is:
+Banada Bot is a feature rich DiscordJS v14 implementation that is:
 
 -   👟Fast👟
 -   ⚡Efficient⚡
