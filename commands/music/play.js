@@ -28,7 +28,7 @@ module.exports = {
 				);
 
 				const message = await interaction.fetchReply();
-				
+
 				//? We do this so we can edit the message later
 				await client.createPlay(interaction, message.id);
 
@@ -43,7 +43,7 @@ module.exports = {
 						.has(PermissionsBitField.Flags.Connect)
 				)
 					return interaction.editReply(
-						`I don't have perm \`CONNECT\` in ${channel.name} to join voice!`
+						`I don't have permission to \`CONNECT\` to ${channel.name}!`
 					);
 				if (
 					!channel
@@ -51,7 +51,7 @@ module.exports = {
 						.has(PermissionsBitField.Flags.Speak)
 				)
 					return interaction.editReply(
-						`I don't have perm \`SPEAK\` in ${channel.name} to join voice!`
+						`I don't have permission to \`SPEAK\` in ${channel.name}!`
 					);
 
 				try {

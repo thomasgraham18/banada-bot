@@ -62,7 +62,7 @@ module.exports = {
 					iconURL: interaction.guild.iconURL({ dynamic: true }),
 				})
 				.setThumbnail(queue.songs[0].thumbnail)
-				.setColor(client.color)
+				.setColor(client.colour)
 				.setDescription(
 					`**Currently Playing:**\n**[${queue.songs[0].name}](${
 						queue.songs[0].url

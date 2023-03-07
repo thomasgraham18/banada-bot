@@ -28,7 +28,7 @@ class BotClient extends Client {
 		// Bot config settings
 		this.token = process.env.DISCORD_TOKEN;
 		this.owner = process.env.OWNER_ID;
-		this.color = process.env.EMBED_COLOR;
+		this.colour = process.env.EMBED_COLOUR;
 
 		const client = this;
 

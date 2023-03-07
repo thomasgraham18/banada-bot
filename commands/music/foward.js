@@ -51,9 +51,9 @@ module.exports = {
 
 				const embed = new EmbedBuilder()
 					.setDescription(
-						`\`⏭\` | *Forward to:* \`${queue.formattedCurrentTime}\``
+						`⏭ | **Forwarded to:** \`${queue.formattedCurrentTime}\``
 					)
-					.setColor(client.color);
+					.setColor(client.colour);
 
 				interaction.editReply({ embeds: [embed] });
 			} else {
@@ -66,9 +66,9 @@ module.exports = {
 
 			const embed = new EmbedBuilder()
 				.setDescription(
-					`\`⏭\` | *Forward to:* \`${queue.formattedCurrentTime}\``
+					`⏭ | *Forwarded to:* \`${queue.formattedCurrentTime}\``
 				)
-				.setColor(client.color);
+				.setColor(client.colour);
 
 			interaction.editReply({ embeds: [embed] });
 		} else {

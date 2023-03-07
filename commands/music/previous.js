@@ -38,16 +38,16 @@ module.exports = {
 
 		if (queue.previousSongs.length == 0) {
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription('`🚨` | **There are no** `Previous` **songs**');
+				.setColor(client.colour)
+				.setDescription('🚨 **There are no previous songs**');
 
 			interaction.editReply({ embeds: [embed] });
 		} else {
 			await client.distube.previous(interaction);
 
 			const embed = new EmbedBuilder()
-				.setColor(client.color)
-				.setDescription('`⏮` |  **Song:**  `Previous`');
+				.setColor(client.colour)
+				.setDescription('⏮ | Went back a song');
 
 			interaction.editReply({ embeds: [embed] });
 		}

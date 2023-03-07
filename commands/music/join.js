@@ -15,7 +15,9 @@ module.exports = {
 
 		const queue = client.distube.getQueue(interaction);
 		if (queue)
-			return interaction.editReply(`I already playing in voice channel.`);
+			return interaction.editReply(
+				`I am already playing in a voice channel.`
+			);
 
 		const { channel } = interaction.member.voice;
 
@@ -26,8 +28,8 @@ module.exports = {
 		await client.distube.voices.join(interaction.member.voice.channel);
 
 		const embed = new EmbedBuilder()
-			.setColor(client.color)
-			.setDescription(`\`🔊\` | **Joined:** \`${channel.name}\``);
+			.setColor(client.colour)
+			.setDescription(`🤟 | **Joined:** \`${channel.name}\``);
 
 		interaction.editReply({ embeds: [embed] });
 	},
