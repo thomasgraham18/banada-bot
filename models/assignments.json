@@ -25,8 +25,8 @@
         "due": "2023-03-30T23:59:00.000Z"
     },
     "7": {
-        "name": "Assignemnt #2",
-        "course": "AT",
+        "name": "Assignment *** #2 (I mispel LOL)",
+        "course": "BT",
         "due": "2023-03-05T23:59:00.000Z"
     },
     "8": {
@@ -38,10 +38,5 @@
         "name": "Assignemnt #2",
         "course": "AT",
         "due": "2023-03-05T23:59:00.000Z"
-    },
-    "10": {
-        "name": "hghjgjh",
-        "course": "drdtgr",
-        "due": "2023-02-10T03:59:59.000Z"
     }
 }

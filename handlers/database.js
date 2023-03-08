@@ -109,11 +109,14 @@ module.exports = async (client) => {
 
 		const assignment = db.get(id.toString());
 
+		console.log("DATABASE.JS: due: " + due);
+
 		if(!name) name = assignment.name;
 		if(!course) course = assignment.course;
-		if(!due.isValid()) due = assignment.due;
-
-		if(!due.isValid()) {
+		if(!(dayjs(due).isValid())) due = assignment.due; 
+		//	 We must recast due as a dayjs object, because it can be a NaN 
+		//	 which if casted has a .isValid() method
+		if(!(dayjs(due).isValid())) {
 			await interaction.reply({
 				content: `**Invalid date!**\n*Tip: You can use the following formats:*\n> March 1
 				> 03/01
