@@ -11,6 +11,13 @@ Banada Bot is a feature rich DiscordJS v14 implementation that is:
 -   ⚡Efficient⚡
 -   ✨Magic✨
 
+## 🎨 Customization
+
+- [x] Embed Colour
+- [x] Spotify playlist w/ more than 100+ tracks
+- [x] Leave on Empty
+- [x] Leave on Finish
+
 ## 📑 Implemented Features
 
 -   [x] Assignments List
