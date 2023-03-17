@@ -73,6 +73,6 @@ function toggleSpotify(client) {
 			},
 		});
 	} else {
-		return new SpotifyPlugin({ emitEventAfterFetching: true });
+		return new SpotifyPlugin({});
 	}
 }
