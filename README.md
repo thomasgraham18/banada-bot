@@ -24,7 +24,7 @@ Banada Bot is a feature-rich DiscordJS v14 implementation that is:
 
 Banada Bot uses several open-source projects to work properly:
 
--   [DiscordJS v14] - The main tech!
+-   [DiscordJS-v14] - The main tech!
 -   [DayJS] - Datetime calculations and formatting!
 -   [Chalk] - Pretty errors and initialization!
 -   [Chillout] - Promise replacer to improve load times, resources, etc.
@@ -81,7 +81,7 @@ Banada Bot uses several open-source projects to work properly:
 [thomas]: https://github.com/thomasgraham18
 [jacques]: https://github.com/jacques-jd
 [git-repo-url]: https://github.com/thomasgraham18/AT-Project
-[discordjs v14]: https://discord.js.org/#/
+[discordjs-v14]: https://discord.js.org/#/
 [dayjs]: https://day.js.org
 [chalk]: https://www.npmjs.com/package/chalk
 [chillout]: https://www.npmjs.com/package/chillout
