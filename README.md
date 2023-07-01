@@ -5,40 +5,28 @@ Built by:
 -   [Thomas]
 -   [Jacques]
 
-Banada Bot is a feature rich DiscordJS v14 implementation that is:
+Banada Bot is a feature-rich DiscordJS v14 implementation that is:
 
 -   👟Fast👟
 -   ⚡Efficient⚡
 -   ✨Magic✨
 
-## 🎨 Customization
-
-- [x] Embed Colour
-- [x] Spotify playlist w/ more than 100+ tracks
-- [x] Leave on Empty
-- [x] Leave on Finish
-
 ## 📑 Implemented Features
 
 -   [x] Assignments List
+-   [x] Moderation
 -   [x] Music Player
 -   [x] YouTube Support
 -   [x] SoundCloud Support
 -   [x] Spotify Support
 
-## 🛠️ Possible Future Features
-
--   [ ] Embed Builder
--   [ ] Moderation
--   [ ] Utility
-
 ## 💻 Tech
 
-WMADHelper uses a number of open source projects to work properly:
+Banada Bot uses several open-source projects to work properly:
 
 -   [DiscordJS v14] - The main tech!
 -   [DayJS] - Datetime calculations and formatting!
--   [Chalk] - Pretty errors and initializaion!
+-   [Chalk] - Pretty errors and initialization!
 -   [Chillout] - Promise replacer to improve load times, resources, etc.
 -   [Delay] - Used to an async delay.
 -   [DisTube] - The power behind the music!
@@ -46,6 +34,11 @@ WMADHelper uses a number of open source projects to work properly:
 -   [st.db] - Quick and easy JSON databases.
 
 ## 🗨️ Command list
+
+### 🛠️ Moderation
+
+-   [x] help
+-   [x] kick
 
 ### 🎶 Music
 
@@ -76,7 +69,6 @@ WMADHelper uses a number of open source projects to work properly:
 -   [x] skipTo
 -   [x] volume
 
-
 ### 📝 Assignments
 
 -   [x] add
@@ -84,16 +76,6 @@ WMADHelper uses a number of open source projects to work properly:
 -   [x] list
 -   [x] remove
 -   [x] view
-
-
-## How we learned:
-
-- [Discord.js Guide]
-- [DisTube Example]
-- [ChatGPT]
-
-& and of course, the documentation linked above for each NPM module.
-
 
 [//]: #
 [thomas]: https://github.com/thomasgraham18
@@ -107,6 +89,3 @@ WMADHelper uses a number of open source projects to work properly:
 [distube]: https://www.npmjs.com/package/distube
 [ffmpeg]: https://ffmpeg.org
 [st.db]: https://www.npmjs.com/package/st.db
-[Discord.js Guide]: https://discordjs.guide
-[DisTube Example]: https://github.com/distubejs/example
-[ChatGPT]: https://chat.openai.com/chat
