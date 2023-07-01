@@ -1,11 +1,11 @@
-# 👋 WMAD Helper
+# 👋 Banada Bot
 
 Built by:
 
 -   [Thomas]
 -   [Jacques]
 
-WMADHelper is a feature rich DiscordJS v14 implementation that is:
+Banada Bot is a feature-rich DiscordJS v14 implementation that is:
 
 -   👟Fast👟
 -   ⚡Efficient⚡
@@ -14,24 +14,19 @@ WMADHelper is a feature rich DiscordJS v14 implementation that is:
 ## 📑 Implemented Features
 
 -   [x] Assignments List
+-   [x] Moderation 
 -   [x] Music Player
 -   [x] YouTube Support
 -   [x] SoundCloud Support
 -   [x] Spotify Support
 
-## 🛠️ Possible Future Features
-
--   [ ] Embed Builder
--   [ ] Moderation
--   [ ] Utility
-
 ## 💻 Tech
 
-WMADHelper uses a number of open source projects to work properly:
+Banada Bot uses several open-source projects to work properly:
 
 -   [DiscordJS v14] - The main tech!
 -   [DayJS] - Datetime calculations and formatting!
--   [Chalk] - Pretty errors and initializaion!
+-   [Chalk] - Pretty errors and initialization!
 -   [Chillout] - Promise replacer to improve load times, resources, etc.
 -   [Delay] - Used to an async delay.
 -   [DisTube] - The power behind the music!
@@ -40,6 +35,12 @@ WMADHelper uses a number of open source projects to work properly:
 
 ## 🗨️ Command list
 
+### 🛠️ Moderation
+
+-   [x] help
+-   [x] kick
+
+        
 ### 🎶 Music
 
 -   [x] autoplay
