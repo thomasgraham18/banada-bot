@@ -1,5 +1,5 @@
 @echo off
-title WMADHelper
+title Banada Bot
 
 :Reconnected
 

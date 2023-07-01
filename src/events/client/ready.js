@@ -9,7 +9,7 @@ module.exports = async (client) => {
 		blue('[INFO] ') + magenta(client.user.tag) + green(' is online!')
 	);
 
-	const activities = [`Always be coding!`, `WMAD 2023`];
+	const activities = ['thomasg.ca', 'thomasg.ca/knowledge', '/play [song]', '/search [song]', 'Spotify, Soundcloud, YouTube'];
 
 	setInterval(() => {
 		client.user.setPresence({
