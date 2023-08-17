@@ -1,6 +1,6 @@
 const { Database } = require('st.db');
 const { green } = require('chalk');
-const dayjs  = require('dayjs');
+const dayjs = require('dayjs');
 console.log(dayjs().format());
 
 /**
@@ -9,6 +9,27 @@ console.log(dayjs().format());
  */
 module.exports = async (client) => {
 	console.log(green('[INFO]') + green(`Database Loaded`));
+
+	client.addVideo = async function (data) {
+		const db = new Database('./models/videos.json', {
+			databaseInObject: true
+		});
+
+		await db.set(data.id.videoId, {
+			id: data.id.videoId,
+			title: data.snippet.title
+		});
+	};
+
+	client.getVideos = async function () {
+		const db = new Database('./models/videos.json', {
+			databaseInObject: true
+		});
+
+		const results = await db.all();
+
+		return results;
+	};
 
 	client.createPlay = async function (interaction, message) {
 		const db = new Database('./models/message.json', {
@@ -59,14 +80,14 @@ module.exports = async (client) => {
 
 		assignments.forEach(
 			assignment => {
-				highestKey = 
-					assignment.ID > highestKey 
-					? assignment.ID 
-					: highestKey;
+				highestKey =
+					assignment.ID > highestKey
+						? assignment.ID
+						: highestKey;
 			}
 		);
 
-		if(!due.isValid()) {
+		if (!due.isValid()) {
 			await interaction.reply({
 				content: `**Invalid date!**\n*Tip: You can use the following formats:*\n> March 1
 				> 03/01
@@ -77,8 +98,8 @@ module.exports = async (client) => {
 			});
 			return;
 		}
-		
-		if(name.length > 50) {
+
+		if (name.length > 50) {
 			await interaction.reply({
 				content: `**Assignment name is too long!**\n*Please don't use more than 50 characters*\n*You used ${name.length} characters*`,
 				ephemeral: true
@@ -86,7 +107,7 @@ module.exports = async (client) => {
 			return;
 		}
 
-		if(course.length > 50) {
+		if (course.length > 50) {
 			await interaction.reply({
 				content: `**Course name is too long!**\n*Please don't use more than 50 characters*\n*You used ${course.length} characters*`,
 				ephemeral: true
@@ -104,16 +125,16 @@ module.exports = async (client) => {
 	client.editAssignment = async function (interaction, id, name, course, due) {
 		//edit assignment
 		const db = new Database('./models/assignments.json', {
-			databaseInObject: true	
+			databaseInObject: true
 		});
 
 		const assignment = db.get(id.toString());
 
-		if(!name) name = assignment.name;
-		if(!course) course = assignment.course;
-		if(!due.isValid()) due = assignment.due;
+		if (!name) name = assignment.name;
+		if (!course) course = assignment.course;
+		if (!due.isValid()) due = assignment.due;
 
-		if(!due.isValid()) {
+		if (!due.isValid()) {
 			await interaction.reply({
 				content: `**Invalid date!**\n*Tip: You can use the following formats:*\n> March 1
 				> 03/01
@@ -125,7 +146,7 @@ module.exports = async (client) => {
 			return;
 		}
 
-		if(name.length > 50) {
+		if (name.length > 50) {
 			await interaction.reply({
 				content: `**Assignment name is too long!**\n*Please don't use more than 50 characters*\n*You used ${name.length} characters*`,
 				ephemeral: true
@@ -133,7 +154,7 @@ module.exports = async (client) => {
 			return;
 		}
 
-		if(course.length > 50) {
+		if (course.length > 50) {
 			await interaction.reply({
 				content: `**Course name is too long!**\n*Please don't use more than 50 characters*\n*You used ${course.length} characters*`,
 				ephemeral: true

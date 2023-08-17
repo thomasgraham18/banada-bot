@@ -1,29 +1,65 @@
 const { green, blue, magenta } = require('chalk');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js'); // Make sure to import the correct classes
+const { google } = require('googleapis');
 
-/**
- * Emited when the bot is ready.
- * @param {BotClient} client
- */
 module.exports = async (client) => {
-	console.log(
-		blue('[INFO] ') + magenta(client.user.tag) + green(' is online!')
-	);
+    console.log(
+        blue('[INFO] ') + magenta(client.user.tag) + green(' is online!')
+    );
 
-	const activities = ['thomasg.ca', 'thomasg.ca/knowledge', '/play [song]', '/search [song]', 'Spotify, Soundcloud, YouTube'];
+    const activities = ['thomasg.ca', 'thomasg.ca/knowledge', '/play [song]', '/search [song]', 'Spotify, Soundcloud, YouTube'];
+	const youtube = google.youtube({
+		version: 'v3',
+		auth: client.apiKey,
+	});
 
-	setInterval(() => {
+    setInterval(async () => {
 		client.user.setPresence({
 			activities: [
 				{
-					name: `${
-						activities[
-							Math.floor(Math.random() * activities.length)
-						]
-					}`,
+					name: `${activities[Math.floor(Math.random() * activities.length)]}`,
 					type: 2,
 				},
 			],
 			status: 'online',
 		});
-	}, 15000);
+
+        try {
+
+            const response = await youtube.search.list({
+                part: 'snippet',
+                channelId: client.youtubeChannel,
+				order: 'Date',
+				maxResults: 10,
+            });
+
+            const data = response.data.items[0];
+			
+            const videos = await client.getVideos();
+
+            if (videos.some(video => video.data.id === data.id.videoId)) {
+                return;
+            } else {
+                await client.addVideo(data);
+
+                const channel = client.channels.cache.get(client.discordChannel);
+                if (!channel) return;
+
+				const date = new Date(data.snippet.publishTime);
+				
+                const embed = new EmbedBuilder()
+                    .setTitle(`📢🗣️‼️ ${data.snippet.channelTitle} 📢🗣️‼️`)
+                    .setColor(0xA020F0)
+					.setImage(data.snippet.thumbnails.high.url)
+					.setURL(`https://www.youtube.com/watch?v=${data.id.videoId}`)
+                    .setDescription(`${data.snippet.title}`)
+                    .setTimestamp(date)
+					.setFooter({text: `https://www.youtube.com/watch?v=${data.id.videoId}`})
+
+                channel.send({ embeds: [embed] });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }, 1800000);
 };

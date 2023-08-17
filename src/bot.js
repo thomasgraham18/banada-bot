@@ -34,6 +34,9 @@ class BotClient extends Client {
 		this.spotifyID = process.env.SPOTIFY_ID;
 		this.spotifySecret = process.env.SPOTIFY_SECRET;
 		this.ytCookie = process.env.YOUTUBE_COOKIE;
+		this.discordChannel = process.env.YOUTUBE_DCCHANNEL;
+		this.youtubeChannel = process.env.YOUTUBE_CHANNEL;
+		this.apiKey = process.env.YOUTUBE_KEY;
 
 		const client = this;
 
