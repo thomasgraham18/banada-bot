@@ -21,9 +21,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Cache Clean
-      run: npm cache clean --force
-      working-directory: ./src
     - name: Install Dependencies
       run: npm ci
       working-directory: ./src
