@@ -20,7 +20,7 @@ module.exports = {
 	// Command execution
 	async execute(interaction, client) {
 		try {
-			if (interaction.options.get('search')) {
+			if (interaction.options.getString('search')) {
 				await interaction.reply(
 					`🔍 **Searching...** \`${interaction.options.getString(
 						'search'
