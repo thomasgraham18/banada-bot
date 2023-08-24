@@ -14,21 +14,23 @@ Banada Bot is a feature-rich DiscordJS v14 implementation that is:
 ## 📑 Implemented Features
 
 -   [x] Assignments List
+-   [x] Embeds
 -   [x] Moderation
 -   [x] Music Player
--   [x] YouTube Support
 -   [x] SoundCloud Support
 -   [x] Spotify Support
+-   [x] YouTube Support
+-   [x] YouTube Channel Monitor
 
 ## 💻 Tech
 
 Banada Bot uses several open-source projects to work properly:
 
--   [DiscordJS-v14] - The main tech!
--   [DayJS] - Datetime calculations and formatting!
 -   [Chalk] - Pretty errors and initialization!
 -   [Chillout] - Promise replacer to improve load times, resources, etc.
+-   [DayJS] - Datetime calculations and formatting!
 -   [Delay] - Used to an async delay.
+-   [DiscordJS-v14] - The main tech!
 -   [DisTube] - The power behind the music!
 -   [ffmpeg] - Audio, audio, audio!
 -   [st.db] - Quick and easy JSON databases.
@@ -39,6 +41,7 @@ Banada Bot uses several open-source projects to work properly:
 
 -   [x] help
 -   [x] kick
+-   [x] embedjson
 
 ### 🎶 Music
 
