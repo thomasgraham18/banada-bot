@@ -60,6 +60,6 @@ module.exports = {
 				`**Removed • [${song.name}](${song.url})** \`${song.formattedDuration}\` • ${song.user}`
 			);
 
-		interaction.editReply({ content: ' ', embeds: [embed] });
+		interaction.editReply({embeds: [embed] });
 	},
 };
