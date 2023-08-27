@@ -37,8 +37,22 @@ module.exports = {
 		const { channel } = interaction.member.voice;
 
 		// Check if user is in a voice channel
-		if (!channel)
-			return interaction.editReply('You need to be in voice channel.');
+		if (!channel) {
+
+			const embed = new EmbedBuilder()
+			.setColor(0xFF0000)
+			.setDescription('No voice channel')
+			.setFooter({ text: `You must be in a voice channel to use this command` });
+
+			await message.edit({
+				content: '🛑 **Error** 🛑',
+				embeds: [embed],
+				components: [],
+			});
+
+			return;
+		}
+
 
 		if (
 			!channel
@@ -95,7 +109,7 @@ module.exports = {
 			interaction,
 		};
 
-		const res = await ytsr(string, { safeSearch: true, limit: 5 });
+		const res = await ytsr(string, { safeSearch: false, limit: 5 });
 
 		let index = 1;
 
@@ -103,8 +117,7 @@ module.exports = {
 			.slice(0, 5)
 			.map(
 				(x) =>
-					`**(${index++}.) [${x.name}](${x.url})** Author: \`${
-						x.author.name
+					`**(${index++}.) [${x.name}](${x.url})** Author: \`${x.author.name
 					}\``
 			)
 			.join('\n');
@@ -116,7 +129,7 @@ module.exports = {
 			})
 			.setColor(client.colour)
 			.setDescription(result)
-			.setFooter({ text: `Please response in 30s` });
+			.setFooter({ text: `Please respond within 30 seconds` });
 
 		await message.edit({
 			content: ' ',
@@ -176,9 +189,15 @@ module.exports = {
 
 		collector.on('end', async (collected, reason) => {
 			if (reason === 'time') {
+
+				const embed = new EmbedBuilder()
+					.setColor(0xFF0000)
+					.setDescription('No response')
+					.setFooter({ text: `Please respond within 30 seconds` });
+
 				message.edit({
-					content: `No Response`,
-					embeds: [],
+					content: '🛑 **Error** 🛑',
+					embeds: [embed],
 					components: [],
 				});
 			}
