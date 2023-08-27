@@ -22,5 +22,5 @@ module.exports = async (client, queue, song) => {
 		)
 		.setColor(client.colour);
 
-	await msg.edit({ content: ' ', embeds: [embed] });
+	await msg.edit({ content: msg.content, embeds: [embed] });
 };

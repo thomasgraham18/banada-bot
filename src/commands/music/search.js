@@ -45,7 +45,7 @@ module.exports = {
 			.setFooter({ text: `You must be in a voice channel to use this command` });
 
 			await message.edit({
-				content: '🛑 **Error** 🛑',
+				content: message.content,
 				embeds: [embed],
 				components: [],
 			});
@@ -132,7 +132,7 @@ module.exports = {
 			.setFooter({ text: `Please respond within 30 seconds` });
 
 		await message.edit({
-			content: ' ',
+			content: message.content,
 			embeds: [embed],
 			components: [row],
 		});
@@ -196,9 +196,10 @@ module.exports = {
 					.setFooter({ text: `Please respond within 30 seconds` });
 
 				message.edit({
-					content: '🛑 **Error** 🛑',
+					content: message.content,
 					embeds: [embed],
 					components: [],
+
 				});
 			}
 		});

@@ -131,7 +131,7 @@ module.exports = {
 			.setFooter({ text: `Please respond within 30 seconds` });
 
 		await message.edit({
-			content: ' ',
+			content: message.content,
 			embeds: [embed],
 			components: [row],
 		});
@@ -188,7 +188,7 @@ module.exports = {
 
 		collector.on('end', async (collected, reason) => {
 			if (reason === 'time') {
-				
+
 				const embed = new EmbedBuilder()
 					.setColor(0xFF0000)
 					.setDescription('No response')

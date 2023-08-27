@@ -131,7 +131,7 @@ module.exports = {
 			.setFooter({ text: `Please respond within 30 seconds` });
 
 		await message.edit({
-			content: ' ',
+			content: message.content,
 			embeds: [embed],
 			components: [row],
 		});
