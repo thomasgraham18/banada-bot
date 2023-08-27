@@ -12,6 +12,8 @@ const DBMessage = new Database('./models/message.json', {
  * @param {Song} song
  */
 module.exports = async (client, queue, song) => {
+	if (queue.songs.length == 1) return;
+
 	const data = await DBMessage.get(queue.textChannel.guild.id);
 
 	const msg = await queue.textChannel.messages.cache.get(data.message_id);
