@@ -33,7 +33,6 @@ class BotClient extends Client {
 		this.spotifyToggle = process.env.SPOTIFY_TOGGLE;
 		this.spotifyID = process.env.SPOTIFY_ID;
 		this.spotifySecret = process.env.SPOTIFY_SECRET;
-		this.ytCookie = process.env.YOUTUBE_COOKIE;
 		this.discordChannel = process.env.YOUTUBE_DCCHANNEL;
 		this.youtubeChannel = process.env.YOUTUBE_CHANNEL;
 		this.apiKey = process.env.YOUTUBE_KEY;
@@ -43,7 +42,7 @@ class BotClient extends Client {
 		// Distube setup
 		this.distube = new DisTube(client, {
 			leaveOnEmpty: false,
-			youtubeCookie: client.ytCookie,
+			youtubeCookie: [process.env.YOUTUBE_COOKIE],
 			emptyCooldown: 60,
 			leaveOnFinish: false,
 			leaveOnStop: false,
@@ -53,7 +52,6 @@ class BotClient extends Client {
 		this.commands = new Collection();
 
 		// Load handlers
-		//? This is just an easy way of loading all the handlers in the handlers folder while passing the client.
 		['commands', 'events', 'database'].forEach((x) =>
 			require(`./handlers/${x}`)(client)
 		);
