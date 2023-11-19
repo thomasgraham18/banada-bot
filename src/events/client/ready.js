@@ -1,6 +1,5 @@
 const { green, blue, magenta } = require('chalk');
 const { EmbedBuilder } = require('discord.js'); // Make sure to import the correct classes
-const { google } = require('googleapis');
 
 module.exports = async (client) => {
 	console.log(
@@ -16,10 +15,6 @@ module.exports = async (client) => {
 		'/search [song]',
 		'Spotify, Soundcloud, YouTube',
 	];
-	const youtube = google.youtube({
-		version: 'v3',
-		auth: client.apiKey,
-	});
 
 	// Every 30 minutes
 	setInterval(async () => {
