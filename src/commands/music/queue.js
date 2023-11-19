@@ -1,5 +1,94 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const { QueuePage } = require('../../models/PageQueue.js');
+const {
+	EmbedBuilder,
+	SlashCommandBuilder,
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+} = require('discord.js');
+
+const QueuePage = async (
+	message,
+	pages,
+	timeout,
+	queueLength,
+	queueDuration
+) => {
+	if (!message && !message.channel)
+		throw new Error('Channel is inaccessible.');
+
+	if (!pages) throw new Error('Pages are not given.');
+
+	const row1 = new ButtonBuilder()
+		.setCustomId('back')
+		.setLabel('⬅')
+		.setStyle(ButtonStyle.Secondary);
+	const row2 = new ButtonBuilder()
+		.setCustomId('next')
+		.setLabel('➡')
+		.setStyle(ButtonStyle.Secondary);
+	const row = new ActionRowBuilder().addComponents(row1, row2);
+
+	let page = 0;
+
+	const curPage = await message.editReply({
+		embeds: [
+			pages[page].setFooter({
+				text: `page • ${page + 1}/${
+					pages.length
+				} | ${queueLength} • songs | ${queueDuration} • total duration`,
+			}),
+		],
+		components: [row],
+		allowedMentions: { repliedUser: false },
+	});
+
+	if (pages.length == 0) return;
+
+	const filter = (m) => m.user.id === message.user.id;
+	
+	const collector = await curPage.createMessageComponentCollector({
+		filter,
+		time: timeout,
+	});
+
+	collector.on('collect', async (interaction) => {
+		if (!interaction.deferred) await interaction.deferUpdate();
+		if (interaction.customId === 'back') {
+			page = page > 0 ? --page : pages.length - 1;
+		} else if (interaction.customId === 'next') {
+			page = page + 1 < pages.length ? ++page : 0;
+		}
+		curPage.edit({
+			embeds: [
+				pages[page].setFooter({
+					text: `page • ${page + 1}/${
+						pages.length
+					} | ${queueLength} • songs | ${queueDuration} • total duration`,
+				}),
+			],
+			components: [row],
+		});
+	});
+
+	collector.on('end', () => {
+		const disabled = new ActionRowBuilder().addComponents(
+			row1.setDisabled(true),
+			row2.setDisabled(true)
+		);
+		curPage.edit({
+			embeds: [
+				pages[page].setFooter({
+					text: `page • ${page + 1}/${
+						pages.length
+					} | ${queueLength} • songs | ${queueDuration} • total duration`,
+				}),
+			],
+			components: [disabled],
+		});
+	});
+
+	return curPage;
+};
 
 /**
  * @description Show the queue
@@ -68,14 +157,14 @@ module.exports = {
 						queue.songs[0].url
 					})** \`[${queue.songs[0].formattedDuration}]\` • ${
 						queue.songs[0].user
-					}\n\n**Rest of queue**${
-						str == '' ? '  Nothing' : '\n' + str
+					}\n\n**Rest of queue:**${
+						str == '' ? '  nothing' : '\n' + str
 					}`
 				)
 				.setFooter({
-					text: `Page • ${i + 1}/${pagesNum} | ${
+					text: `page • ${i + 1}/${pagesNum} | ${
 						queue.songs.length
-					} • Songs | ${queue.formattedDuration} • Total duration`,
+					} songs | ${queue.formattedDuration} • total duration`,
 				});
 			pages.push(embed);
 		}
@@ -83,7 +172,6 @@ module.exports = {
 		if (!args) {
 			if (pages.length == pagesNum && queue.songs.length > 10)
 				QueuePage(
-					client,
 					interaction,
 					pages,
 					60000,
