@@ -52,14 +52,14 @@ module.exports = async (client, queue, track) => {
 					.setColor(client.colour)
 					.setDescription(`⏯ | **Song:**  \`Resumed\``);
 
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			} else {
 				await client.distube.pause(message.guild.id);
 				const embed = new EmbedBuilder()
 					.setColor(client.colour)
 					.setDescription(`⏯ | **Song:**  \`Paused\``);
 
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			}
 		} else if (id === 'skip') {
 			// Check if queue is empty
@@ -73,7 +73,7 @@ module.exports = async (client, queue, track) => {
 						'🚨 | **There are no songs in the queue!**'
 					);
 
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			} else {
 				await client.distube.skip(message);
 				const embed = new EmbedBuilder()
@@ -81,7 +81,7 @@ module.exports = async (client, queue, track) => {
 					.setDescription('⏭ | **Song:**  `Skipped`');
 
 				nowPlaying.edit({ components: [] });
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			}
 		} else if (id === 'stop') {
 			// Check if queue is empty
@@ -94,7 +94,7 @@ module.exports = async (client, queue, track) => {
 				.setColor(client.colour);
 
 			await nowPlaying.edit({ components: [] });
-			message.reply({ embeds: [embed], ephemeral: true });
+			message.reply({ embeds: [embed], ephemeral: false });
 		} else if (id === 'loop') {
 			// Check if queue is empty
 			if (!queue) {
@@ -106,14 +106,14 @@ module.exports = async (client, queue, track) => {
 					.setColor(client.colour)
 					.setDescription(`🔁 | **Song is now looping**`);
 
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			} else {
 				client.distube.setRepeatMode(message.guild.id, 0);
 				const embed = new EmbedBuilder()
 					.setColor(client.colour)
 					.setDescription(`🔁 | **Song is no longer looping**`);
 
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			}
 		} else if (id === 'previous') {
 			// Check if queue is empty
@@ -125,7 +125,7 @@ module.exports = async (client, queue, track) => {
 					.setColor(client.colour)
 					.setDescription('🚨 | **There are no previous songs!**');
 
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			} else {
 				await client.distube.previous(message);
 				const embed = new EmbedBuilder()
@@ -133,7 +133,7 @@ module.exports = async (client, queue, track) => {
 					.setDescription('⏮ |  **Went back a song**');
 
 				await nowPlaying.edit({ components: [] });
-				message.reply({ embeds: [embed], ephemeral: true });
+				message.reply({ embeds: [embed], ephemeral: false });
 			}
 		} else if (id === 'shuffle') {
 			// Check if queue is empty
@@ -145,7 +145,7 @@ module.exports = async (client, queue, track) => {
 				.setColor(client.colour)
 				.setDescription(`🔀 | **Songs have been shuffled**`);
 
-			message.reply({ embeds: [embed], ephemeral: true });
+			message.reply({ embeds: [embed], ephemeral: false });
 		} else if (id === 'voldown') {
 			// Check if queue is empty
 			if (!queue) {
@@ -160,7 +160,7 @@ module.exports = async (client, queue, track) => {
 					`🔊 | **Decreased volume to:** \`${queue.volume}\`%`
 				);
 
-			message.reply({ embeds: [embed], ephemeral: true });
+			message.reply({ embeds: [embed], ephemeral: false });
 		} else if (id === 'clear') {
 			// Check if queue is empty
 			if (!queue) {
@@ -172,7 +172,7 @@ module.exports = async (client, queue, track) => {
 				.setDescription(`🍁 | **Queue has been cleared**`)
 				.setColor(client.colour);
 
-			message.reply({ embeds: [embed], ephemeral: true });
+			message.reply({ embeds: [embed], ephemeral: false });
 		} else if (id === 'volup') {
 			// Check if queue is empty
 			if (!queue) {
@@ -185,7 +185,7 @@ module.exports = async (client, queue, track) => {
 					`🔊 | **Increased volume to:** \`${queue.volume}\`%`
 				);
 
-			message.reply({ embeds: [embed], ephemeral: true });
+			message.reply({ embeds: [embed], ephemeral: false });
 		} else if (id === 'queue') {
 			// Check if queue is empty
 			if (!queue) {
@@ -233,7 +233,7 @@ module.exports = async (client, queue, track) => {
 				pages.push(embed);
 			}
 
-			message.reply({ embeds: [pages[0]], ephemeral: true });
+			message.reply({ embeds: [pages[0]], ephemeral: false });
 		}
 	});
 

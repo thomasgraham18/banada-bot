@@ -11,7 +11,7 @@ module.exports = {
 
 	// Command execution
 	async execute(interaction, client) {
-		await interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply({ ephemeral: false });
 
 		const queue = client.distube.getQueue(interaction);
 
