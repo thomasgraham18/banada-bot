@@ -1,5 +1,4 @@
 const { green, blue, magenta } = require('chalk');
-const { EmbedBuilder } = require('discord.js'); // Make sure to import the correct classes
 
 module.exports = async (client) => {
 	console.log(
