@@ -1,9 +1,10 @@
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
-require('dotenv').config();
+const config = require('./config.json');
 const { DisTube } = require('distube');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { green } = require('chalk');
+const fs = require('fs');
 
 class BotClient extends Client {
 	constructor() {
@@ -27,23 +28,21 @@ class BotClient extends Client {
 		});
 
 		// Bot config settings
-		this.token = process.env.DISCORD_TOKEN;
-		this.owner = process.env.OWNER_ID;
-		this.colour = process.env.EMBED_COLOUR;
-		this.spotifyToggle = process.env.SPOTIFY_TOGGLE;
-		this.spotifyID = process.env.SPOTIFY_ID;
-		this.spotifySecret = process.env.SPOTIFY_SECRET;
-		this.discordChannel = process.env.YOUTUBE_DCCHANNEL;
-		this.youtubeChannel = process.env.YOUTUBE_CHANNEL;
-		this.apiKey = process.env.YOUTUBE_KEY;
+		this.token = config.DISCORD_TOKEN;
+		this.owner = config.OWNER_ID;
+		this.colour = config.EMBED_COLOUR;
+		this.spotifyToggle = config.SPOTIFY_TOGGLE;
+		this.spotifyID = config.SPOTIFY_ID;
+		this.spotifySecret = config.SPOTIFY_SECRET;
+		this.youtubeCookie = config.YOUTUBE_COOKIE;
 
 		const client = this;
 
 		// Distube setup
 		this.distube = new DisTube(client, {
-			leaveOnEmpty: false,
-			youtubeCookie: [process.env.YOUTUBE_COOKIE],
+			youtubeCookie: JSON.parse(fs.readFileSync('cookie.json')),
 			emptyCooldown: 60,
+			leaveOnEmpty: false,
 			leaveOnFinish: false,
 			leaveOnStop: false,
 			plugins: [new SoundCloudPlugin(), toggleSpotify(client)],
