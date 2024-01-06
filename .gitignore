@@ -162,3 +162,5 @@ dist
 *.env
 
 src/models/*.json
+src/cookie.json
+src/config.json
