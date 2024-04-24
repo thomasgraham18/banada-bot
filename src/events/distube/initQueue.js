@@ -7,6 +7,5 @@ require('dotenv').config();
  * @param {Queue} client
  */
 module.exports = async (client, queue) => {
-	queue.autoplay = true;
 	queue.volume = 100;
 };
