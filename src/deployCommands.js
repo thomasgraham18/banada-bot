@@ -1,11 +1,11 @@
 const { REST, Routes } = require('discord.js');
 const recursive = require('recursive-readdir');
 const path = require('path');
-require('dotenv').config();
+const config = require('./config.json');
 
-const clientId = process.env.CLIENT_ID;
-const guildId = process.env.GUILD_ID;
-const token = process.env.DISCORD_TOKEN;
+const clientId = config.CLIENT_ID;
+const guildId = config.GUILD_ID;
+const token = config.DISCORD_TOKEN;
 
 const commands = [];
 
