@@ -35,6 +35,10 @@ class BotClient extends Client {
 		this.spotifyID = config.SPOTIFY_ID;
 		this.spotifySecret = config.SPOTIFY_SECRET;
 		this.youtubeCookie = config.YOUTUBE_COOKIE;
+		this.leaveOnEmpty = config.LEAVE_EMPTY;
+		this.leaveOnEmptyTime = config.LEAVE_EMPTY_TIME;
+		this.leaveOnFinish = config.LEAVE_FINISH;
+		this.leaveStop = config.LEAVE_STOP;
 
 		const client = this;
 
