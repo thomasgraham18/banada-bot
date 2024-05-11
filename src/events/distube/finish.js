@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
-require('dotenv').config();
+const { EmbedBuilder } = require("discord.js");
+require("dotenv").config();
 
 /**
  * Emited when the queue is empty.
@@ -7,19 +7,19 @@ require('dotenv').config();
  * @param {Queue} client
  */
 module.exports = async (client, queue) => {
-	if (process.env.LEAVE_FINISH == 'false') {
-		const embed = new EmbedBuilder()
-			.setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
-			.setColor(client.colour);
+  if (process.env.LEAVE_FINISH == "false") {
+    const embed = new EmbedBuilder()
+      .setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
+      .setColor(client.colour);
 
-		queue.textChannel.send({ embeds: [embed] });
-	} else if (process.env.LEAVE_FINISH == 'true') {
-		await client.distube.voices.leave(queue.textChannel.guild);
+    queue.textChannel.send({ embeds: [embed] });
+  } else if (process.env.LEAVE_FINISH == "true") {
+    await client.distube.voices.leave(queue.textChannel.guild);
 
-		const embed = new EmbedBuilder()
-			.setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
-			.setColor(client.colour);
+    const embed = new EmbedBuilder()
+      .setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
+      .setColor(client.colour);
 
-		queue.textChannel.send({ embeds: [embed] });
-	}
+    queue.textChannel.send({ embeds: [embed] });
+  }
 };

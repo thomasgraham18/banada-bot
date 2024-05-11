@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require("discord.js");
 
 /**
  * Emited when the channel is empty.
@@ -7,10 +7,10 @@ const { EmbedBuilder } = require('discord.js');
  *  * @param {Error} error
  */
 module.exports = async (client, channel, error) => {
-    const embed = new EmbedBuilder()
-        .setTitle("** ⁉️ Error occured **")
-        .setColor(0xFF0000)
-        .setDescription(`${error}`);
+  const embed = new EmbedBuilder()
+    .setTitle("** ⁉️ Error occured **")
+    .setColor(0xff0000)
+    .setDescription(`${error}`);
 
-    channel.send({ embeds: [embed] });
+  channel.send({ embeds: [embed] });
 };

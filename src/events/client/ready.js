@@ -57,5 +57,3 @@ module.exports = async (client) => {
       .catch(console.error);
   }, 86400000);
 };
-
-

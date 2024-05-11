@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
-require('dotenv').config();
+const { EmbedBuilder } = require("discord.js");
+require("dotenv").config();
 
 /**
  * Emited when the queue is empty.
@@ -7,5 +7,5 @@ require('dotenv').config();
  * @param {Queue} client
  */
 module.exports = async (client, queue) => {
-	queue.volume = 100;
+  queue.volume = 100;
 };
