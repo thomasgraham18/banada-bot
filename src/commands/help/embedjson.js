@@ -8,7 +8,7 @@ module.exports = {
     // Slash command properties
     data: new SlashCommandBuilder()
         .setName('embedjson')
-        .setDescription('Sends an embed built using https://glitchii.github.io/embedbuilder/')
+        .setDescription('https://glitchii.github.io/embedbuilder/')
         .addChannelOption((option) =>
             option
                 .setName('channel')

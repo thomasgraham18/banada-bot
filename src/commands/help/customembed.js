@@ -8,7 +8,7 @@ module.exports = {
     // Slash command properties
     data: new SlashCommandBuilder()
         .setName('embedcustom')
-        .setDescription('Sends an custom embed built into the code of this command - DEV ONLY')
+        .setDescription('Send embed built into code')
         .addChannelOption((option) =>
             option
                 .setName('channel')
