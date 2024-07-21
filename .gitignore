@@ -164,3 +164,9 @@ dist
 src/models/*.json
 src/cookie.json
 src/config.json
+
+start-docker.bat
+
+Dockerfile
+
+
