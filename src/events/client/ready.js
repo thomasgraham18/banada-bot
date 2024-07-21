@@ -48,7 +48,7 @@ module.exports = async (client) => {
       ],
       status: "online",
     });
-  }, 90000);
+    }, 90000);
 
   setInterval(async () => {
     channel
