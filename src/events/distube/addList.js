@@ -1,24 +1,28 @@
 const { EmbedBuilder } = require("discord.js");
-const { Database } = require("st.db");
-
-const DBMessage = new Database("./models/message.json", {
-  databaseInObject: true,
-});
+const announce = require("../../utils/announce");
+const player = require("../../utils/player");
 
 /**
- * @description Emitted when a playlist is added to the queue.
+ * Emitted when a playlist is added to the queue.
  * @param {BotClient} client
- * @param {Queue} client
- * @param {*} playlist
+ * @param {Queue} queue
+ * @param {Playlist} playlist
  */
 module.exports = async (client, queue, playlist) => {
-  const data = await DBMessage.get(queue.textChannel.guild.id);
-  const msg = await queue.textChannel.messages.cache.get(data.message_id);
+  const title = playlist.url
+    ? `[${playlist.name}](${playlist.url})`
+    : playlist.name;
+
   const embed = new EmbedBuilder()
     .setDescription(
-      `**Queued • [${playlist.name}](${playlist.url})** \`${queue.formattedDuration}\` (${playlist.songs.length} tracks) • ${playlist.user}`
+      `**Queued • ${title}** \`${playlist.formattedDuration}\` (${
+        playlist.songs.length
+      } tracks) • ${playlist.user ?? ""}`
     )
     .setColor(client.colour);
 
-  await msg.edit({ content: msg.content, embeds: [embed] });
+  await announce(queue, playlist, embed);
+
+  // Update the "up next" list on the player panel.
+  player.refresh(client, queue.id);
 };

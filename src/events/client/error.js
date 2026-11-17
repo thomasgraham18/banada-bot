@@ -1,16 +1,10 @@
-const { EmbedBuilder } = require("discord.js");
-const { red, blue } = require("chalk");
+const { red } = require("chalk");
 
-module.exports = async (client, channel, error) => {
-  console.log(
-    red(`[ERROR] `) +
-      "An error event was sent by Discord.js: \n" +
-      blue("[INFO]: ") +
-      client.user.tag +
-      " " +
-      client.user.id +
-      " " +
-      blue("[ERROR]: ") +
-      error
-  );
+/**
+ * Emitted when discord.js hits an error. Without a listener Node would crash.
+ * @param {BotClient} client
+ * @param {Error} error
+ */
+module.exports = async (client, error) => {
+  console.error(red("[ERROR]"), "An error event was sent by Discord.js:", error);
 };

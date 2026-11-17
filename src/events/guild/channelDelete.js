@@ -1,27 +1,14 @@
 /**
- * Emited when a channel is deleted.
+ * Emitted when a channel is deleted. If it was the voice channel the bot was
+ * playing in, drop the queue and leave.
  * @param {BotClient} client
- * @param {*} channel
- * @returns
+ * @param {import("discord.js").GuildChannel} channel
  */
 module.exports = async (client, channel) => {
-  if (channel.type == 2) {
-    if (channel.members.has(client.user.id)) {
-      const queue = client.distube.getQueue(channel.guild.id);
-      if (queue) {
-        client.distube.stop(channel);
-        return;
-      }
-    }
-  }
+  if (!channel.isVoiceBased?.()) return;
 
-  if (channel.type == 13) {
-    if (channel.members.has(client.user.id)) {
-      const queue = client.distube.getQueue(channel.guild.id);
-      if (queue) {
-        client.distube.stop(channel);
-        return;
-      }
-    }
+  const queue = client.distube.getQueue(channel.guild.id);
+  if (queue && queue.voiceChannel?.id === channel.id) {
+    client.distube.voices.leave(channel.guild);
   }
 };

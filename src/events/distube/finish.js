@@ -1,25 +1,10 @@
-const { EmbedBuilder } = require("discord.js");
-require("dotenv").config();
-
 /**
- * Emited when the queue is empty.
+ * Emitted when the queue has no more songs to play. The player panel shows
+ * "playback ended" by itself (see deleteQueue.js); this only applies the
+ * LEAVE_FINISH setting, because DisTube v5 removed its leaveOnFinish option.
  * @param {BotClient} client
- * @param {Queue} client
+ * @param {Queue} queue
  */
 module.exports = async (client, queue) => {
-  if (process.env.LEAVE_FINISH == "false") {
-    const embed = new EmbedBuilder()
-      .setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
-      .setColor(client.colour);
-
-    queue.textChannel.send({ embeds: [embed] });
-  } else if (process.env.LEAVE_FINISH == "true") {
-    await client.distube.voices.leave(queue.textChannel.guild);
-
-    const embed = new EmbedBuilder()
-      .setDescription(`\`🍁\` |  **Song:**  \`Ended\``)
-      .setColor(client.colour);
-
-    queue.textChannel.send({ embeds: [embed] });
-  }
+  if (client.leaveOnFinish) queue.voice.leave();
 };
