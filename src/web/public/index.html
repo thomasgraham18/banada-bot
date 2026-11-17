@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banada Panel</title>
+<style>
+:root {
+  --bg: #f4f2f7; --panel: #ffffff; --panel-2: #f8f6fb; --line: #e3dfea;
+  --text: #1d1a22; --muted: #6c6676; --accent: #6b2fa0; --accent-ink: #fff;
+  --danger: #c0392b; --ok: #1e8e4e; --warn: #b7791f; --code: #efeaf5;
+  --radius: 10px; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131117; --panel: #1c1922; --panel-2: #23202b; --line: #322d3c;
+    --text: #ece9f1; --muted: #9a93a6; --accent: #a66be0; --accent-ink: #120d18;
+    --danger: #ef6f61; --ok: #4cc382; --warn: #e3a948; --code: #2a2533;
+    --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+
+header { display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+  background: var(--panel); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; flex-wrap: wrap; }
+header .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; }
+header .brand img { width: 30px; height: 30px; border-radius: 50%; }
+header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); display: inline-block; }
+header .dot.on { background: var(--ok); }
+nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+nav button { background: none; border: 0; padding: 7px 12px; border-radius: 8px; cursor: pointer; color: var(--muted); }
+nav button:hover { background: var(--panel-2); color: var(--text); }
+nav button.active { background: var(--accent); color: var(--accent-ink); }
+
+main { max-width: 1180px; margin: 0 auto; padding: 20px 16px 80px; }
+h2 { font-size: 18px; margin: 4px 0 14px; }
+h3 { font-size: 15px; margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px; box-shadow: var(--shadow); margin-bottom: 14px; }
+.card.inner { background: var(--panel-2); box-shadow: none; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row.spread { justify-content: space-between; }
+.stack > * + * { margin-top: 10px; }
+.fields { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+label.field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+label.field > span { font-weight: 600; }
+label.check { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+input[type=text], input[type=number], input[type=password], select, textarea {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; width: 100%; min-width: 0; }
+textarea { resize: vertical; min-height: 64px; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+input[type=color] { width: 36px; height: 32px; padding: 2px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel); cursor: pointer; }
+input[type=range] { accent-color: var(--accent); }
+
+.btn { border: 1px solid var(--line); background: var(--panel); padding: 7px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--danger); }
+.btn.icon { padding: 5px 9px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--code); color: var(--muted); }
+.badge.ok { color: var(--ok); } .badge.warn { color: var(--warn); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; }
+.opts td input[type=text] { padding: 5px 7px; }
+.opts .code { width: 70px; } .opts .emoji { width: 130px; }
+.scroll-x { overflow-x: auto; }
+
+.np { display: flex; gap: 12px; align-items: center; }
+.np img { width: 96px; height: 54px; object-fit: cover; border-radius: 6px; background: var(--code); }
+.np .title { font-weight: 600; }
+ol.up { margin: 6px 0 0; padding-left: 22px; }
+ol.up li { padding: 2px 0; }
+
+.swatch { font-weight: 700; }
+.emoji-img { width: 20px; height: 20px; vertical-align: -4px; }
+.log { font: 12px/1.5 ui-monospace, Consolas, monospace; background: var(--code); border-radius: 8px; padding: 10px; max-height: 240px; overflow: auto; white-space: pre-wrap; }
+
+.preview { background: #313338; color: #dbdee1; border-radius: 8px; padding: 12px 14px; font-size: 14px; line-height: 1.4; }
+.preview .msg + .msg { margin-top: 14px; padding-top: 14px; border-top: 1px solid #3f4147; }
+.preview .quote { border-left: 4px solid #4e5058; padding-left: 10px; }
+.preview .mention { background: rgba(88,101,242,.3); color: #c9cdfb; border-radius: 3px; padding: 0 2px; }
+.preview .sub { font-size: 12px; color: #949ba4; }
+.preview h4 { margin: 0; font-size: 15px; }
+.preview .len { font-size: 11px; color: #949ba4; float: right; }
+.preview .len.bad { color: #f23f43; font-weight: 700; }
+
+#toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg);
+  padding: 9px 16px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 20; max-width: 90vw; }
+#toast.show { opacity: .95; }
+#toast.err { background: var(--danger); color: #fff; }
+
+.login { max-width: 420px; margin: 12vh auto; }
+
+/* Server tab */
+.side-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 14px; align-items: start; }
+.pkg-nav { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 2px; }
+.pkg-nav button { text-align: left; background: none; border: 0; padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--text); display: flex; gap: 8px; align-items: center; }
+.pkg-nav button:hover { background: var(--panel-2); }
+.pkg-nav button.active { background: var(--accent); color: var(--accent-ink); }
+.pkg-nav .cmd { font-size: 11px; opacity: .7; }
+.form-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.form-grid .wide { grid-column: 1 / -1; }
+.chip { display: inline-flex; gap: 4px; align-items: center; padding: 1px 7px; border-radius: 999px; background: var(--code); font-size: 12px; }
+.chip.missing { color: var(--danger); }
+.clip { max-width: 360px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
+.add-row { border-top: 1px dashed var(--line); padding-top: 12px; margin-top: 4px; }
+.preview .embed { border-left: 4px solid #5865f2; background: #2b2d31; border-radius: 4px; padding: 8px 12px; margin-top: 6px; }
+@media (max-width: 860px) { .side-layout { grid-template-columns: 1fr; } .pkg-nav { position: static; flex-direction: row; flex-wrap: wrap; } }
+.split { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr) 380px; align-items: start; }
+.sticky { position: sticky; top: 76px; }
+@media (max-width: 960px) { .split { grid-template-columns: 1fr; } .sticky { position: static; } }
+@media (max-width: 560px) { main { padding: 14px 16px 60px; } header { padding: 10px 16px; } }
+</style>
+</head>
+<body>
+<header id="top" hidden>
+  <div class="brand"><img id="avatar" alt=""><span id="botname">Banada</span> <span id="dot" class="dot"></span></div>
+  <nav id="tabs">
+    <button data-tab="dashboard">Dashboard</button>
+    <button data-tab="server">Server</button>
+    <button data-tab="roles">Reaction roles</button>
+    <button data-tab="settings">Settings</button>
+    <button data-tab="commands">Commands</button>
+    <button data-tab="activity">Activity</button>
+  </nav>
+</header>
+<main id="app"></main>
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+// ------------------------------------------------------------ basics
+const $ = (sel, root = document) => root.querySelector(sel);
+const app = $("#app");
+
+function h(tag, props = {}, ...children) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "class") el.className = v;
+    else if (k === "style") el.style.cssText = v;
+    else if (k in el && k !== "list") el[k] = v;
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of children.flat(Infinity)) if (c != null && c !== false) el.append(c instanceof Node ? c : String(c));
+  return el;
+}
+
+let toastTimer;
+function toast(text, err = false) {
+  const t = $("#toast");
+  t.textContent = text;
+  t.className = "show" + (err ? " err" : "");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => (t.className = ""), err ? 5000 : 2200);
+}
+
+function storage(key, value) {
+  try {
+    if (value === undefined) return localStorage.getItem(key);
+    if (value === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, value);
+  } catch { return null; }
+}
+
+// ------------------------------------------------------------ api
+let token = "";
+{
+  const m = /token=([^&]+)/.exec(location.hash);
+  if (m) {
+    token = decodeURIComponent(m[1]);
+    storage("panelToken", token);
+    history.replaceState(null, "", location.pathname);
+  } else token = storage("panelToken") || "";
+}
+
+async function api(path, { method = "GET", body } = {}) {
+  const res = await fetch("/api" + path, {
+    method,
+    headers: { Authorization: "Bearer " + token, ...(body ? { "Content-Type": "application/json" } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401) { storage("panelToken", null); showLogin("That token was not accepted."); throw new Error("Unauthorised"); }
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+async function attempt(fn, ok) {
+  try { const r = await fn(); if (ok) toast(ok); return r; }
+  catch (e) { if (e.message !== "Unauthorised") toast(e.message, true); }
+}
+
+// ------------------------------------------------------------ shell
+let status = null;
+let current = "";
+let poller = null;
+const views = {};
+
+function showLogin(msg) {
+  $("#top").hidden = true;
+  clearInterval(poller);
+  const input = h("input", { type: "password", placeholder: "Panel token", autocomplete: "current-password" });
+  const go = () => { token = input.value.trim(); storage("panelToken", token); boot(); };
+  app.replaceChildren(h("div", { class: "card login stack" },
+    h("h2", {}, "Banada Panel"),
+    h("p", { class: "muted" }, "Paste the panel token. The bot prints a ready-made link when it starts."),
+    msg && h("p", { style: "color:var(--danger)" }, msg),
+    input,
+    h("button", { class: "btn primary", onclick: go }, "Open panel")));
+  input.addEventListener("keydown", (e) => e.key === "Enter" && go());
+  input.focus();
+}
+
+async function refreshStatus() {
+  status = await api("/status");
+  $("#dot").classList.toggle("on", status.ready);
+  $("#botname").textContent = status.user?.tag ?? "Banada (offline)";
+  if (status.user?.avatar) $("#avatar").src = status.user.avatar;
+  return status;
+}
+
+function go(tab) {
+  current = tab;
+  storage("panelTab", tab);
+  for (const b of $("#tabs").children) b.classList.toggle("active", b.dataset.tab === tab);
+  clearInterval(poller);
+  poller = null;
+  app.replaceChildren(h("p", { class: "muted" }, "Loading…"));
+  views[tab]().catch((e) => e.message !== "Unauthorised" && app.replaceChildren(h("div", { class: "card" }, "Could not load: " + e.message)));
+}
+
+async function boot() {
+  if (!token) return showLogin();
+  try { await refreshStatus(); } catch (e) { if (e.message !== "Unauthorised") showLogin(e.message); return; }
+  $("#top").hidden = false;
+  go(storage("panelTab") || "dashboard");
+}
+$("#tabs").addEventListener("click", (e) => e.target.dataset.tab && go(e.target.dataset.tab));
+
+const fmtUptime = (ms) => {
+  const s = Math.floor(ms / 1000), d = Math.floor(s / 86400), hh = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+  return (d ? d + "d " : "") + hh + "h " + m + "m";
+};
+
+// ------------------------------------------------------------ dashboard
+views.dashboard = async () => {
+  const draw = () => {
+    if (document.activeElement?.type === "range") return; // don't fight a slider drag
+    const s = status;
+    app.replaceChildren(
+      h("h2", {}, "Dashboard"),
+      h("div", { class: "grid", style: "margin-bottom:14px" },
+        h("div", { class: "card" }, h("div", { class: "muted small" }, "Status"), h("div", { style: "font-size:20px;font-weight:650" }, s.ready ? "Online" : "Offline")),
+        h("div", { class: "card" }, h("div", { class: "muted small" }, "Uptime · ping · memory"),
+          h("div", { style: "font-size:20px;font-weight:650" }, `${fmtUptime(s.uptimeMs)} · ${s.ping} ms · ${s.memoryMb} MB`))),
+      s.guilds.length ? s.guilds.map(guildCard) : h("div", { class: "card muted" }, "The bot is not in any server yet."));
+  };
+
+  const music = (guildId, action, body) =>
+    attempt(async () => { await api(`/music/${guildId}/${action}`, { method: "POST", body }); await refreshStatus(); draw(); });
+
+  function guildCard(g) {
+    const q = g.queue;
+    const head = h("div", { class: "row spread" },
+      h("div", { class: "row" }, g.icon && h("img", { src: g.icon, style: "width:28px;height:28px;border-radius:50%" }), h("h3", { style: "margin:0" }, g.name)),
+      h("div", { class: "row" },
+        h("span", { class: "badge" }, g.members + " members"),
+        h("span", { class: "badge " + (g.features.gradients ? "ok" : "") }, "Gradients " + (g.features.gradients ? "✓" : "✗")),
+        h("span", { class: "badge " + (g.features.roleIcons ? "ok" : "") }, "Role icons " + (g.features.roleIcons ? "✓" : "✗"))));
+    if (!q) return h("div", { class: "card" }, head, h("p", { class: "muted", style: "margin:10px 0 0" }, "Nothing playing."));
+
+    const vol = h("input", { type: "range", min: 0, max: 200, step: 5, value: q.volume, style: "width:160px",
+      onchange: (e) => music(g.id, "volume", { volume: Number(e.target.value) }) });
+    return h("div", { class: "card stack" }, head,
+      h("div", { class: "np" },
+        q.current?.thumbnail && h("img", { src: q.current.thumbnail, alt: "" }),
+        h("div", {},
+          h("div", { class: "muted small" }, (q.paused ? "⏸ Paused" : "▶ Playing") + ` in ${q.voiceChannel ?? "?"} · ${q.currentTime} / ${q.current?.duration ?? "?"}`),
+          h("div", { class: "title" }, q.current?.url ? h("a", { href: q.current.url, target: "_blank", rel: "noopener" }, q.current.name) : q.current?.name),
+          q.current?.user && h("div", { class: "muted small" }, "Requested by " + q.current.user))),
+      h("div", { class: "row" },
+        h("button", { class: "btn icon", title: "Previous", onclick: () => music(g.id, "previous") }, "⏮"),
+        h("button", { class: "btn icon", title: "Play / pause", onclick: () => music(g.id, "toggle") }, q.paused ? "▶" : "⏸"),
+        h("button", { class: "btn icon", title: "Skip", onclick: () => music(g.id, "skip") }, "⏭"),
+        h("button", { class: "btn icon danger", title: "Stop", onclick: () => confirm("Stop playback and clear the queue?") && music(g.id, "stop") }, "⏹"),
+        h("button", { class: "btn icon", title: "Shuffle", onclick: () => music(g.id, "shuffle") }, "🔀"),
+        h("button", { class: "btn", title: "Loop", onclick: () => music(g.id, "loop") }, "🔁 " + q.repeatMode),
+        h("button", { class: "btn" + (q.autoplay ? " primary" : ""), onclick: () => music(g.id, "autoplay") }, "Autoplay " + (q.autoplay ? "on" : "off")),
+        h("span", { class: "row", style: "margin-left:auto" }, "🔊", vol, h("span", { class: "small muted" }, q.volume + "%"))),
+      q.upcoming.length
+        ? h("div", {}, h("div", { class: "muted small" }, `Up next · ${q.length - 1} song(s) · ${q.totalDuration} total`),
+            h("ol", { class: "up" }, q.upcoming.map((s, i) => h("li", {},
+              s.name, " ", h("span", { class: "muted small" }, s.duration), " ",
+              h("button", { class: "btn icon small", title: "Remove", onclick: () => music(g.id, "remove", { index: i + 1 }) }, "✕")))))
+        : h("div", { class: "muted small" }, q.autoplay ? "Queue empty, autoplay will pick the next song." : "Queue empty."));
+  }
+
+  draw();
+  poller = setInterval(() => refreshStatus().then(() => current === "dashboard" && draw()).catch(() => {}), 5000);
+};
+
+// ------------------------------------------------------------ settings
+views.settings = async () => {
+  const s = await api("/settings");
+  const channelOpts = await channelOptions(s.commandsChannelId);
+
+  const f = {
+    colour: h("input", { type: "color", value: "#" + s.colour }),
+    defaultVolume: h("input", { type: "number", min: 0, max: 200, value: s.defaultVolume }),
+    leaveOnEmpty: h("input", { type: "checkbox", checked: s.leaveOnEmpty }),
+    leaveOnEmptyMin: h("input", { type: "number", min: 0, step: 1, value: Math.round(s.leaveOnEmptyTime / 60000) }),
+    leaveOnFinish: h("input", { type: "checkbox", checked: s.leaveOnFinish }),
+    leaveOnStop: h("input", { type: "checkbox", checked: s.leaveOnStop }),
+    commandListEnabled: h("input", { type: "checkbox", checked: s.commandListEnabled }),
+    commandsChannelId: h("select", {}, channelOpts),
+    presenceIntervalSec: h("input", { type: "number", min: 15, value: s.presenceIntervalSec }),
+    activities: h("textarea", { rows: 7, value: s.activities.join("\n") }),
+  };
+
+  const save = () => attempt(() => api("/settings", { method: "PUT", body: {
+    colour: f.colour.value.slice(1),
+    defaultVolume: Number(f.defaultVolume.value),
+    leaveOnEmpty: f.leaveOnEmpty.checked,
+    leaveOnEmptyTime: Number(f.leaveOnEmptyMin.value) * 60000,
+    leaveOnFinish: f.leaveOnFinish.checked,
+    leaveOnStop: f.leaveOnStop.checked,
+    commandListEnabled: f.commandListEnabled.checked,
+    commandsChannelId: f.commandsChannelId.value,
+    presenceIntervalSec: Number(f.presenceIntervalSec.value),
+    activities: f.activities.value.split("\n"),
+  } }), "Settings saved and applied.");
+
+  app.replaceChildren(
+    h("h2", {}, "Bot-wide settings"),
+    h("p", { class: "muted" }, "Defaults for every server. Each server can override colour, volume, the leave options and the command list under Server → Bot settings. The rotating status is bot-wide by nature (one status for the whole bot)."),
+    h("div", { class: "card stack" }, h("h3", {}, "Look & playback"),
+      h("div", { class: "fields" },
+        h("label", { class: "field" }, h("span", {}, "Embed / player colour"), f.colour),
+        h("label", { class: "field" }, h("span", {}, "Default volume for new queues (%)"), f.defaultVolume))),
+    h("div", { class: "card stack" }, h("h3", {}, "Leaving the voice channel"),
+      h("label", { class: "check" }, f.leaveOnEmpty, "Leave when nobody is listening, after"),
+      h("label", { class: "field", style: "max-width:240px" }, h("span", {}, "Minutes (max ≈ 35 791)"), f.leaveOnEmptyMin),
+      h("label", { class: "check" }, f.leaveOnFinish, "Leave when the queue finishes"),
+      h("label", { class: "check" }, f.leaveOnStop, "Leave on /stop or the stop button")),
+    h("div", { class: "card stack" }, h("h3", {}, "Status & command list"),
+      h("div", { class: "fields" },
+        h("label", { class: "field" }, h("span", {}, "Change status every (seconds)"), f.presenceIntervalSec),
+        h("label", { class: "field" }, h("span", {}, "Command list channel"), f.commandsChannelId)),
+      h("label", { class: "check" }, f.commandListEnabled, "Post the command list on startup and once a day"),
+      h("label", { class: "field" }, h("span", {}, "Custom statuses (one per line, picked at random)"), f.activities)),
+    h("div", { class: "row" },
+      h("button", { class: "btn primary", onclick: save }, "Save settings"),
+      h("button", { class: "btn", onclick: () => attempt(() => api("/commands/post-list", { method: "POST" }), "Command list posted.") }, "Post command list now")));
+};
+
+async function channelOptions(selected) {
+  const opts = [h("option", { value: "" }, "— none —")];
+  for (const g of status.guilds) {
+    const chans = await api(`/guilds/${g.id}/channels`).catch(() => []);
+    opts.push(h("optgroup", { label: g.name }, chans.map((c) => h("option", { value: c.id, selected: c.id === selected }, "#" + c.name))));
+  }
+  return opts;
+}
+
+// ------------------------------------------------------------ commands
+views.commands = async () => {
+  const cmds = await api("/commands");
+  app.replaceChildren(h("h2", {}, "Commands"),
+    h("div", { class: "card scroll-x" }, h("table", {},
+      h("tr", {}, h("th", {}, "Command"), h("th", {}, "Description"), h("th", {}, "Options")),
+      cmds.sort((a, b) => a.name.localeCompare(b.name)).map((c) =>
+        h("tr", {}, h("td", {}, h("code", {}, "/" + c.name)), h("td", {}, c.description), h("td", { class: "muted small" }, c.options.join(", ")))))),
+    h("p", { class: "muted small" }, "After changing command definitions in code, run npm run deploy."));
+};
+
+// ------------------------------------------------------------ activity
+views.activity = async () => {
+  const draw = (items) => app.replaceChildren(h("h2", {}, "Reaction role activity"),
+    h("div", { class: "card" }, items.length
+      ? h("table", {}, items.map((a) => h("tr", {}, h("td", { class: "muted small", style: "white-space:nowrap" }, new Date(a.time).toLocaleString()), h("td", {}, a.text))))
+      : h("p", { class: "muted", style: "margin:0" }, "Nothing yet. Picks and swaps appear here while the bot runs.")));
+  draw(await api("/reaction-roles/activity"));
+  poller = setInterval(() => api("/reaction-roles/activity").then((a) => current === "activity" && draw(a)).catch(() => {}), 5000);
+};
+
+// ------------------------------------------------------------ reaction roles
+views.roles = async () => {
+  // One board per server: start with the server last used in the panel.
+  let startGuild = storage("panelGuild");
+  if (!status.guilds.some((g) => g.id === startGuild)) startGuild = status.guilds[0]?.id;
+  if (!startGuild) return app.replaceChildren(h("div", { class: "card muted" }, "The bot is not in any server yet."));
+  let board = await api(`/reaction-roles?guild=${startGuild}`);
+  let roles = [], emojis = [], channels = [];
+  let dirty = false;
+
+  const uid = () => Math.random().toString(36).slice(2, 10);
+  const markDirty = () => { dirty = true; saveBtn.textContent = "Save changes •"; schedulePreview(); };
+  const bind = (obj, key, el, kind = "value") => {
+    el[kind] = obj[key] ?? (kind === "checked" ? false : "");
+    el.addEventListener(el.tagName === "SELECT" || kind === "checked" ? "change" : "input", () => { obj[key] = el[kind]; markDirty(); });
+    return el;
+  };
+
+  async function loadGuild() {
+    [roles, emojis, channels] = board.guildId
+      ? await Promise.all(["roles", "emojis", "channels"].map((k) => api(`/guilds/${board.guildId}/${k}`).catch(() => [])))
+      : [[], [], []];
+  }
+  if (!board.guildId && status.guilds.length === 1) { board.guildId = status.guilds[0].id; dirty = true; }
+  await loadGuild();
+
+  const roleById = (id) => roles.find((r) => r.id === id);
+  const emojiByText = (t) => emojis.find((e) => e.text === t);
+  const emojiNode = (t) => {
+    const m = /^<a?:(\w+):(\d+)>$/.exec(t || "");
+    const e = emojiByText(t) || (m && { url: `https://cdn.discordapp.com/emojis/${m[2]}.png`, name: m[1] });
+    return e ? h("img", { class: "emoji-img", src: e.url, alt: e.name, title: e.name }) : (t || "");
+  };
+  const roleName = (g, o) => (g.rolePrefix ? `${g.rolePrefix}: ${o.code || o.label}` : (o.label || o.code || "Role"));
+
+  // ---- job log
+  const logBox = h("div", { class: "log" }, "No task has run yet.");
+  let jobTimer = null;
+  function showJob(job) {
+    logBox.textContent = job.name ? `${job.name}${job.running ? " (running…)" : ""}\n` + job.lines.join("\n") : "No task has run yet.";
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+  function watchJob() {
+    clearInterval(jobTimer);
+    jobTimer = setInterval(async () => {
+      if (current !== "roles") return clearInterval(jobTimer);
+      const job = await api("/reaction-roles/job").catch(() => null);
+      if (!job) return;
+      showJob(job);
+      if (!job.running) {
+        clearInterval(jobTimer);
+        toast(job.ok ? job.name + " finished." : job.name + " failed.", !job.ok);
+        board = await api(`/reaction-roles?guild=${board.guildId}`); dirty = false; await loadGuild(); render();
+      }
+    }, 1000);
+  }
+  api("/reaction-roles/job").then(showJob).catch(() => {});
+
+  async function save(quiet) {
+    board = await api("/reaction-roles", { method: "PUT", body: board });
+    dirty = false;
+    if (!quiet) { toast("Saved."); render(); }
+  }
+  const run = (action, confirmText) => attempt(async () => {
+    if (confirmText && !confirm(confirmText)) return;
+    if (dirty) await save(true);
+    showJob(await api("/reaction-roles/" + action, { method: "POST", body: { guildId: board.guildId } }));
+    watchJob();
+  });
+
+  const saveBtn = h("button", { class: "btn primary", onclick: () => attempt(() => save()) }, "Save changes");
+
+  // ---- preview
+  const previewBox = h("div", { class: "preview" });
+  let previewTimer;
+  function schedulePreview() { clearTimeout(previewTimer); previewTimer = setTimeout(drawPreview, 350); }
+  async function drawPreview() {
+    const msgs = await api("/reaction-roles/preview", { method: "POST", body: board }).catch(() => null);
+    if (!msgs) return;
+    previewBox.replaceChildren(...(msgs.length ? msgs.map(renderMsg) : [h("div", { class: "sub" }, "Nothing to post yet.")]));
+  }
+  function renderInline(text) {
+    // Tiny Discord-markdown renderer: mentions, custom emoji, **bold**, *italic*, __underline__.
+    const out = [];
+    const re = /(<@&(\d+)>|<a?:\w+:\d+>|\*\*(.+?)\*\*|__(.+?)__|\*(.+?)\*)/g;
+    let last = 0, m;
+    while ((m = re.exec(text))) {
+      out.push(text.slice(last, m.index));
+      if (m[2]) { const r = roleById(m[2]); out.push(h("span", { class: "mention", style: r && r.colour !== "#000000" ? `color:${r.colour}` : "" }, "@" + (r ? r.name : "unknown-role"))); }
+      else if (m[0].startsWith("<")) out.push(emojiNode(m[0]));
+      else if (m[3] != null) out.push(h("b", {}, renderInline(m[3])));
+      else if (m[4] != null) out.push(h("u", {}, renderInline(m[4])));
+      else out.push(h("i", {}, renderInline(m[5])));
+      last = re.lastIndex;
+    }
+    out.push(text.slice(last));
+    return out;
+  }
+  function renderMsg(msg) {
+    const lines = msg.content.split("\n");
+    const nodes = [];
+    let quote = null;
+    for (const raw of lines) {
+      const isQuote = raw.startsWith("> ") || raw === ">";
+      let line = isQuote ? raw.replace(/^> ?/, "") : raw;
+      const sub = line.startsWith("-# ");
+      if (sub) line = line.slice(3);
+      const node = h("div", { class: sub ? "sub" : "" }, line ? renderInline(line) : " ");
+      if (isQuote) { if (!quote) nodes.push(quote = h("div", { class: "quote" })); quote.append(node); }
+      else { quote = null; nodes.push(node); }
+    }
+    return h("div", { class: "msg" }, h("span", { class: "len" + (msg.tooLong ? " bad" : "") }, `${msg.length}/2000`), nodes);
+  }
+
+  // ---- option row
+  function optionRow(group, menu, o, i) {
+    const emojiInput = bind(o, "emoji", h("input", { type: "text", class: "emoji", placeholder: "🍁 or <:name:id>" }));
+    const emojiShow = h("span", {}, emojiNode(o.emoji));
+    emojiInput.addEventListener("input", () => emojiShow.replaceChildren(emojiNode(o.emoji)));
+    const pick = emojis.length && h("select", { title: "Server emoji", style: "width:44px",
+      onchange: (e) => { if (!e.target.value) return; o.emoji = emojiInput.value = e.target.value; emojiShow.replaceChildren(emojiNode(o.emoji)); e.target.value = ""; markDirty(); } },
+      h("option", { value: "" }, "☺"), emojis.map((e) => h("option", { value: e.text }, ":" + e.name + ":")));
+
+    const roleSel = h("select", {},
+      h("option", { value: "" }, `➕ create "${roleName(group, o)}"`),
+      roles.filter((r) => !r.managed).map((r) => h("option", { value: r.id }, r.name)));
+    bind(o, "roleId", roleSel);
+
+    const cells = [
+      h("td", {}, bind(o, "code", h("input", { type: "text", class: "code", placeholder: "1.01" }))),
+      h("td", {}, bind(o, "label", h("input", { type: "text", placeholder: "Label" }))),
+      h("td", {}, h("div", { class: "row", style: "flex-wrap:nowrap" }, emojiShow, emojiInput, pick)),
+      h("td", {}, roleSel),
+    ];
+
+    if (group.kind === "colour") {
+      const swatch = h("span", { class: "swatch" }, o.label || "Aa");
+      const paint = () => {
+        swatch.textContent = o.label || "Aa";
+        swatch.style.cssText = o.holo
+          ? "background:linear-gradient(90deg,#A9C9FF,#FFBBEC,#FFC3A0);-webkit-background-clip:text;background-clip:text;color:transparent"
+          : o.colour2
+          ? `background:linear-gradient(90deg,${o.colour},${o.colour2});-webkit-background-clip:text;background-clip:text;color:transparent`
+          : `color:${o.colour || "inherit"}`;
+      };
+      const c1 = h("input", { type: "color", value: o.colour || "#99AAB5", oninput: (e) => { o.colour = e.target.value.toUpperCase(); paint(); markDirty(); } });
+      const c2 = h("input", { type: "color", value: o.colour2 || "#FFFFFF", disabled: !o.colour2, oninput: (e) => { o.colour2 = e.target.value.toUpperCase(); paint(); markDirty(); } });
+      const grad = h("input", { type: "checkbox", checked: Boolean(o.colour2), title: "Gradient",
+        onchange: (e) => { o.colour2 = e.target.checked ? c2.value.toUpperCase() : ""; c2.disabled = !e.target.checked; paint(); markDirty(); } });
+      const holo = h("input", { type: "checkbox", checked: o.holo, title: "Holographic",
+        onchange: (e) => { o.holo = e.target.checked; paint(); markDirty(); } });
+      paint();
+      cells.push(h("td", {}, h("div", { class: "row", style: "flex-wrap:nowrap" }, c1,
+        h("label", { class: "check small", title: "Gradient" }, grad, "→"), c2,
+        h("label", { class: "check small", title: "Holographic (needs Enhanced Role Styles)" }, holo, "holo"), swatch)));
+    }
+
+    const move = (d) => { const j = i + d; if (j < 0 || j >= menu.options.length) return; [menu.options[i], menu.options[j]] = [menu.options[j], menu.options[i]]; markDirty(); render(); };
+    cells.push(h("td", { style: "white-space:nowrap" },
+      h("button", { class: "btn icon", title: "Up", onclick: () => move(-1) }, "↑"),
+      h("button", { class: "btn icon", title: "Down", onclick: () => move(1) }, "↓"),
+      h("button", { class: "btn icon danger", title: "Remove", onclick: () => { menu.options.splice(i, 1); markDirty(); render(); } }, "✕")));
+    return h("tr", {}, cells);
+  }
+
+  // ---- menu
+  function menuCard(group, menu, mi) {
+    const moveMenu = (d) => { const j = mi + d; if (j < 0 || j >= group.menus.length) return; [group.menus[mi], group.menus[j]] = [group.menus[j], group.menus[mi]]; markDirty(); render(); };
+    return h("div", { class: "card inner stack" },
+      h("div", { class: "row spread" },
+        h("div", { class: "row" }, h("b", {}, menu.title || "Menu"), menu.messageId ? h("span", { class: "badge ok" }, "posted") : h("span", { class: "badge" }, "not posted"),
+          h("span", { class: "badge" }, `${menu.options.length}/20 options`)),
+        h("div", { class: "row" },
+          h("button", { class: "btn icon", onclick: () => moveMenu(-1) }, "↑"),
+          h("button", { class: "btn icon", onclick: () => moveMenu(1) }, "↓"),
+          h("button", { class: "btn icon danger", onclick: () => confirm(`Remove menu "${menu.title}"? Its message is deleted on the next publish.`) && (group.menus.splice(mi, 1), markDirty(), render()) }, "Remove menu"))),
+      h("div", { class: "fields" },
+        h("label", { class: "field" }, h("span", {}, "Title"), bind(menu, "title", h("input", { type: "text" }))),
+        h("label", { class: "field" }, h("span", {}, "Description"), bind(menu, "description", h("input", { type: "text" }))),
+        h("label", { class: "field" }, h("span", {}, "Note (small text)"), bind(menu, "note", h("input", { type: "text" })))),
+      h("div", { class: "scroll-x" }, h("table", { class: "opts" },
+        h("tr", {}, h("th", {}, "Code"), h("th", {}, "Label"), h("th", {}, "Emoji"), h("th", {}, "Role"), group.kind === "colour" && h("th", {}, "Colour"), h("th", {})),
+        menu.options.map((o, i) => optionRow(group, menu, o, i)))),
+      h("button", { class: "btn", disabled: menu.options.length >= 20, onclick: () => {
+        const n = menu.options.length + 1;
+        const prefix = (menu.options[0]?.code || "1.01").split(".")[0];
+        menu.options.push({ id: uid(), code: `${prefix}.${String(n).padStart(2, "0")}`, label: "", emoji: "", roleId: "", colour: group.kind === "colour" ? "#99AAB5" : "", colour2: "", holo: false });
+        markDirty(); render();
+      } }, "+ Add option"));
+  }
+
+  // ---- group
+  function groupCard(group, gi) {
+    const reqSel = h("select", { multiple: true, size: Math.min(6, Math.max(3, roles.length)),
+      onchange: (e) => { group.requiredRoleIds = [...e.target.selectedOptions].map((x) => x.value); markDirty(); } },
+      roles.map((r) => h("option", { value: r.id, selected: group.requiredRoleIds.includes(r.id) }, r.name)));
+    const kindSel = h("select", {}, h("option", { value: "colour" }, "Colour roles"), h("option", { value: "icon" }, "Role icons"), h("option", { value: "plain" }, "Plain roles"));
+    bind(group, "kind", kindSel);
+    kindSel.addEventListener("change", render);
+    const moveGroup = (d) => { const j = gi + d; if (j < 0 || j >= board.groups.length) return; [board.groups[gi], board.groups[j]] = [board.groups[j], board.groups[gi]]; markDirty(); render(); };
+
+    return h("div", { class: "card stack" },
+      h("div", { class: "row spread" }, h("h3", { style: "margin:0" }, group.name),
+        h("div", { class: "row" },
+          h("button", { class: "btn icon", onclick: () => moveGroup(-1) }, "↑"),
+          h("button", { class: "btn icon", onclick: () => moveGroup(1) }, "↓"),
+          h("button", { class: "btn danger", onclick: () => confirm(`Remove group "${group.name}"?`) && (board.groups.splice(gi, 1), markDirty(), render()) }, "Remove group"))),
+      h("div", { class: "fields" },
+        h("label", { class: "field" }, h("span", {}, "Group name (panel only)"), bind(group, "name", h("input", { type: "text" }))),
+        h("label", { class: "field" }, h("span", {}, "Type"), kindSel),
+        h("label", { class: "field" }, h("span", {}, "Role name prefix → \"Prefix: code\""), bind(group, "rolePrefix", h("input", { type: "text", placeholder: "Colour" })))),
+      h("label", { class: "check" }, bind(group, "exclusive", h("input", { type: "checkbox" }), "checked"), "Members keep only one role from this group (picking another swaps it)"),
+      h("label", { class: "field" }, h("span", {}, "Only members with one of these roles may pick (none selected = everyone; Ctrl-click to select several)"), reqSel),
+      h("label", { class: "field" }, h("span", {}, "Header (shown above the first menu, Discord markdown)"), bind(group, "header", h("textarea", { rows: 3 }))),
+      group.menus.map((m, mi) => menuCard(group, m, mi)),
+      h("button", { class: "btn", onclick: () => { group.menus.push({ id: uid(), title: "New menu", description: "", note: "", options: [] }); markDirty(); render(); } }, "+ Add menu"));
+  }
+
+  // ---- page
+  function render() {
+    // Each server has its own board: switching loads that server's board.
+    const guildSel = h("select", { onchange: (e) => attempt(async () => {
+      if (dirty && !confirm("You have unsaved changes on this server's board. Switch anyway?")) { e.target.value = board.guildId; return; }
+      board = await api(`/reaction-roles?guild=${e.target.value}`);
+      storage("panelGuild", board.guildId);
+      dirty = false; saveBtn.textContent = "Save changes";
+      await loadGuild(); render();
+    }) },
+      h("option", { value: "" }, "— pick a server —"), status.guilds.map((g) => h("option", { value: g.id, selected: g.id === board.guildId }, g.name)));
+    const chanSel = h("select", {}, h("option", { value: "" }, "— pick a channel —"),
+      channels.map((c) => h("option", { value: c.id }, (c.parent ? c.parent + " / " : "") + "#" + c.name)));
+    bind(board, "channelId", chanSel);
+    const g = status.guilds.find((x) => x.id === board.guildId);
+
+    app.replaceChildren(
+      h("div", { class: "row spread" }, h("h2", {}, "Reaction roles"),
+        h("div", { class: "row" }, saveBtn,
+          h("button", { class: "btn", onclick: () => attempt(async () => { await save(true); await loadGuild(); render(); }, "Saved and reloaded.") }, "Reload server data"))),
+      h("div", { class: "split" },
+        h("div", {},
+          h("div", { class: "card stack" },
+            h("div", { class: "fields" },
+              h("label", { class: "field" }, h("span", {}, "Server"), guildSel),
+              h("label", { class: "field" }, h("span", {}, "Channel to post in"), chanSel)),
+            g && h("div", { class: "row small" },
+              h("span", { class: "badge " + (g.features.gradients ? "ok" : "warn") }, g.features.gradients ? "Gradient & holographic roles available" : "No Enhanced Role Styles: gradients use their first colour"),
+              h("span", { class: "badge " + (g.features.roleIcons ? "ok" : "warn") }, g.features.roleIcons ? "Role icons available" : "No role icons (needs boost level 2)")),
+            h("label", { class: "check" }, bind(board, "removeUnknown", h("input", { type: "checkbox" }), "checked"), "Remove reactions that are not one of the options"),
+            h("label", { class: "check" }, bind(board, "raiseNewRoles", h("input", { type: "checkbox" }), "checked"), "Place new roles just below the bot's role (so their colour shows)"),
+            h("label", { class: "field" }, h("span", {}, "Intro message (optional, posted first)"), bind(board.intro, "content", h("textarea", { rows: 4, placeholder: "# Server Boost Perks\nThanks for boosting!" })))),
+          board.groups.map(groupCard),
+          h("div", { class: "row" },
+            h("button", { class: "btn", onclick: () => { board.groups.push({ id: uid(), name: "New group", kind: "colour", rolePrefix: "", exclusive: true, requiredRoleIds: [], header: "", menus: [] }); markDirty(); render(); } }, "+ Add group"),
+            h("button", { class: "btn", onclick: () => attempt(async () => {
+              if (!confirm("Replace all groups with the starter colour + icon template? (Posted menus are deleted and re-posted on the next publish.)")) return;
+              board.groups = (await api("/reaction-roles/template")).groups; markDirty(); render();
+            }) }, "Load starter template"))),
+        h("div", { class: "sticky stack" },
+          h("div", { class: "card stack" }, h("h3", {}, "Publish"),
+            h("p", { class: "muted small", style: "margin:0" }, "1. Create the roles. 2. Publish the menus. Saving happens automatically."),
+            h("div", { class: "row" },
+              h("button", { class: "btn", onclick: () => run("create-roles") }, "Create missing roles"),
+              h("button", { class: "btn", onclick: () => run("restyle", "Push the colours / icons from this page onto the existing roles?") }, "Restyle roles")),
+            h("div", { class: "row" },
+              h("button", { class: "btn primary", onclick: () => run("publish") }, "Publish / update"),
+              h("button", { class: "btn danger", onclick: () => run("repost", "Delete the posted menus and post them again? Members keep their roles but their reactions are lost.") }, "Repost all")),
+            logBox),
+          h("div", { class: "card stack" }, h("h3", {}, "Preview"), previewBox))));
+    drawPreview();
+  }
+
+  window.onbeforeunload = () => (dirty ? true : undefined);
+  render();
+  if (dirty) saveBtn.textContent = "Save changes •";
+};
+
+// ------------------------------------------------------------ server (feature settings)
+// Forms are generated from the schema the bot sends (web/panelSchema.js).
+views.server = async () => {
+  if (!status.guilds.length) return app.replaceChildren(h("div", { class: "card muted" }, "The bot is not in any server yet."));
+  const schema = await api("/panel/schema");
+  let guildId = storage("panelGuild");
+  if (!status.guilds.some((g) => g.id === guildId)) guildId = status.guilds[0].id;
+  let pkgId = storage("panelPkg") || schema[0].id;
+  if (!schema.some((p) => p.id === pkgId)) pkgId = schema[0].id;
+
+  let ref = {}; // roles / channels / emojis / commands for the current server
+  async function loadRefs() {
+    const [roles, channels, emojis, cmds] = await Promise.all([
+      api(`/guilds/${guildId}/roles`).catch(() => []),
+      api(`/guilds/${guildId}/channels?all=1`).catch(() => []),
+      api(`/guilds/${guildId}/emojis`).catch(() => []),
+      api(`/guilds/${guildId}/commandpaths`).catch(() => ({ paths: [], modules: [] })),
+    ]);
+    ref = { roles: roles.filter((r) => !r.managed), channels, emojis, ...cmds };
+  }
+
+  const fmtTime = (ms) => (ms ? new Date(Number(ms)).toLocaleString() : "—");
+  const fmtDur = (ms) => {
+    if (!ms) return "—";
+    let s = Math.round(ms / 1000); const out = [];
+    for (const [l, n] of [["d", 86400], ["h", 3600], ["m", 60], ["s", 1]]) if (s >= n) { out.push(Math.floor(s / n) + l); s %= n; }
+    return out.slice(0, 2).join(" ");
+  };
+
+  /** Shows a stored value in a table cell. */
+  function cell(value, type, labels) {
+    if (value === null || value === undefined || value === "") return h("span", { class: "muted" }, "—");
+    if (["channel", "voice", "category", "role", "user", "member", "snowflake"].includes(type) && labels[value]) {
+      const l = labels[value];
+      return h("span", { class: "chip" + (l.missing ? " missing" : ""), title: value, style: l.colour ? `color:${l.colour}` : "" }, l.text);
+    }
+    if (type === "bool") return value ? "✅" : "—";
+    if (type === "time") return fmtTime(value);
+    if (type === "duration") return typeof value === "number" ? fmtDur(value) : value;
+    if (type === "select" || type === "commandPath" || type === "module") return h("code", {}, String(value));
+    if (type === "emojiList") { try { return JSON.parse(value).map((e) => e.text ?? e).join(" "); } catch { return value; } }
+    if (type === "message") return h("span", { class: "chip", title: value }, "message …" + String(value).slice(-5));
+    if (type === "script" || type === "clip" || String(value).length > 80) return h("span", { class: "clip", title: String(value) }, String(value));
+    return String(value);
+  }
+
+  /** An input widget for one field. Returns { el, get(), set(v) }. */
+  function widget(field) {
+    const t = field.type;
+    let el, get, set;
+    const select = (options, placeholder) => h("select", {}, h("option", { value: "" }, placeholder), options);
+    if (t === "bool" && !field.optional) {
+      el = h("input", { type: "checkbox" }); get = () => el.checked; set = (v) => (el.checked = Boolean(v));
+      return { el: h("label", { class: "check" }, el, field.label), get, set, inline: true };
+    }
+    if (t === "bool") {
+      el = h("select", {}, h("option", { value: "" }, "Default"), h("option", { value: "true" }, "On"), h("option", { value: "false" }, "Off"));
+      get = () => (el.value === "" ? null : el.value === "true"); set = (v) => (el.value = v == null ? "" : String(Boolean(v)));
+    } else if (t === "role") {
+      el = select(ref.roles.map((r) => h("option", { value: r.id }, r.name)), field.optional ? "— none —" : "— pick a role —");
+    } else if (["channel", "voice", "category"].includes(t)) {
+      const kind = t === "channel" ? "text" : t;
+      el = select(ref.channels.filter((c) => c.kind === kind).map((c) => h("option", { value: c.id }, (c.parent ? c.parent + " / " : "") + (kind === "category" ? "" : "#") + c.name)),
+        field.optional ? (field.name === "channel_id" ? "— none / everywhere —" : "— none —") : "— pick a channel —");
+    } else if (t === "select") {
+      el = select(field.options.map((o) => h("option", { value: o.value }, o.label)), field.optional ? "— default —" : "— choose —");
+    } else if (t === "module") {
+      el = select(ref.modules.map((m) => h("option", { value: m }, m)), "— choose —");
+    } else if (t === "commandPath") {
+      const id = "dl-" + Math.random().toString(36).slice(2);
+      el = h("span", {}, h("input", { type: "text", list: id, placeholder: "levels rank" }), h("datalist", { id }, ref.paths.map((p) => h("option", { value: p }))));
+      const input = el.firstChild; get = () => input.value.trim(); set = (v) => (input.value = v ?? "");
+    } else if (t === "snowflake") {
+      const input = h("input", { type: "text", placeholder: "ID" });
+      const pick = h("select", { style: "max-width:110px", onchange: (e) => { if (e.target.value) input.value = e.target.value; e.target.value = ""; } },
+        h("option", { value: "" }, "pick…"),
+        h("optgroup", { label: "Channels" }, ref.channels.filter((c) => c.kind !== "category").map((c) => h("option", { value: c.id }, "#" + c.name))),
+        h("optgroup", { label: "Roles" }, ref.roles.map((r) => h("option", { value: r.id }, "@" + r.name))));
+      el = h("div", { class: "row", style: "flex-wrap:nowrap" }, input, pick);
+      get = () => input.value.trim(); set = (v) => (input.value = v ?? "");
+    } else if (t === "member") {
+      // Type a name: matching server members are suggested; the stored value is their ID.
+      const id = "dm-" + Math.random().toString(36).slice(2);
+      const input = h("input", { type: "text", list: id, placeholder: "Search a member by name or paste an ID" });
+      const list = h("datalist", { id });
+      let timer;
+      input.addEventListener("input", () => {
+        clearTimeout(timer);
+        const q = input.value.trim();
+        if (q.length < 2 || /^\d{15,25}$/.test(q)) return;
+        timer = setTimeout(async () => {
+          const found = await api(`/guilds/${guildId}/members?q=${encodeURIComponent(q)}`).catch(() => []);
+          list.replaceChildren(...found.map((m) => h("option", { value: m.id }, `${m.name} (@${m.username})`)));
+        }, 300);
+      });
+      el = h("span", {}, input, list);
+      get = () => input.value.trim(); set = (v) => (input.value = v ?? "");
+    } else if (t === "script") {
+      const ta = h("textarea", { rows: 4, placeholder: "Plain text, or a JSON script starting with {\"" });
+      const out = h("div");
+      const preview = h("button", { class: "btn small", type: "button", onclick: () => attempt(async () => {
+        const p = await api(`/guilds/${guildId}/script-preview`, { method: "POST", body: { script: ta.value } });
+        out.replaceChildren(h("div", { class: "preview", style: "margin-top:8px" },
+          p.content && h("div", {}, p.content),
+          p.embeds.map((e) => h("div", { class: "embed", style: e.color != null ? `border-left-color:#${e.color.toString(16).padStart(6, "0")}` : "" },
+            e.title && h("h4", {}, e.title), e.description && h("div", {}, e.description),
+            (e.fields ?? []).map((f) => h("div", {}, h("b", {}, f.name), " ", f.value)),
+            e.image?.url && h("div", { class: "sub" }, "🖼 " + e.image.url))),
+          p.buttons.map((b) => h("span", { class: "chip" }, "🔗 " + b.label))));
+      }) }, "Preview");
+      el = h("div", {}, ta, h("div", { class: "row", style: "margin-top:4px" }, preview, h("span", { class: "small muted" }, "Variables: {user.mention} {user.name} {guild.name} {guild.count} …")), out);
+      get = () => ta.value; set = (v) => (ta.value = v ?? "");
+      return { el, get, set, wide: true };
+    } else if (t === "emoji") {
+      const input = h("input", { type: "text", placeholder: "⭐ or <:name:id>" });
+      const pick = ref.emojis.length && h("select", { style: "max-width:90px", onchange: (e) => { if (e.target.value) input.value = e.target.value; e.target.value = ""; } },
+        h("option", { value: "" }, "server…"), ref.emojis.map((e) => h("option", { value: e.text }, ":" + e.name + ":")));
+      el = h("div", { class: "row", style: "flex-wrap:nowrap" }, input, pick);
+      get = () => input.value.trim(); set = (v) => (input.value = v ?? "");
+    } else if (t === "colour") {
+      const c = h("input", { type: "color", value: "#5865f2" });
+      const use = h("input", { type: "checkbox" });
+      el = h("div", { class: "row" }, c, field.optional && h("label", { class: "check small" }, use, "custom"));
+      get = () => (field.optional && !use.checked ? null : c.value); set = (v) => { use.checked = Boolean(v); if (v) c.value = v.toLowerCase(); };
+    } else if (t === "readonly") {
+      el = h("div", { class: "muted" }); get = () => undefined;
+      set = (v) => (el.textContent = v == null ? "—" : field.format === "time" ? fmtTime(v) : String(v));
+    } else {
+      el = h("input", { type: t === "int" || t === "number" ? "number" : "text", step: t === "number" ? "0.05" : "1", min: field.min, max: field.max,
+        placeholder: t === "duration" ? "10m, 1h30m, 2d" : field.optional ? "(optional)" : "" });
+    }
+    get ??= () => (el.value === "" ? null : el.value);
+    set ??= (v) => (el.value = v ?? "");
+    return { el, get, set };
+  }
+
+  const fieldBox = (field, w) => w.inline ? h("div", { class: w.wide ? "wide" : "" }, w.el)
+    : h("label", { class: "field" + (w.wide ? " wide" : "") }, h("span", {}, field.label, field.optional ? "" : " *"), w.el);
+
+  // ---- section renderers
+  function formSection(pkg, section, index, data) {
+    const widgets = section.fields.map((f) => [f, widget(f)]);
+    for (const [f, w] of widgets) w.set(data.values?.[f.name]);
+    const save = () => attempt(async () => {
+      const values = {};
+      for (const [f, w] of widgets) if (f.type !== "readonly") values[f.name] = w.get();
+      const r = await api(`/guilds/${guildId}/panel/${pkg.id}/${index}`, { method: "PUT", body: { values } });
+      toast(r.warning || "Saved.", Boolean(r.warning));
+      await drawPackage();
+    });
+    return h("div", { class: "card stack" },
+      h("h3", {}, section.title), section.help && h("p", { class: "muted small", style: "margin:0" }, section.help),
+      h("div", { class: "form-grid" }, widgets.map(([f, w]) => fieldBox(f, w))),
+      h("div", {}, h("button", { class: "btn primary", onclick: save }, "Save")));
+  }
+
+  function listSection(pkg, section, index, data) {
+    const widgets = section.fields.map((f) => [f, widget(f)]);
+    const add = () => attempt(async () => {
+      const values = {};
+      for (const [f, w] of widgets) values[f.name] = w.get();
+      const r = await api(`/guilds/${guildId}/panel/${pkg.id}/${index}/rows`, { method: "POST", body: { values } });
+      toast(r.warning || "Saved.", Boolean(r.warning));
+      await drawPackage();
+    });
+    const remove = (row) => attempt(async () => {
+      if (!confirm("Remove this entry?")) return;
+      const r = await api(`/guilds/${guildId}/panel/${pkg.id}/${index}/delete`, { method: "POST", body: { key: row._key } });
+      toast(r.warning || "Removed.", Boolean(r.warning));
+      await drawPackage();
+    });
+    const edit = (row) => { for (const [f, w] of widgets) w.set(row[f.name]); addBox.scrollIntoView({ behavior: "smooth", block: "center" }); };
+    const addBox = h("div", { class: "add-row stack" },
+      h("div", { class: "form-grid" }, widgets.map(([f, w]) => fieldBox(f, w))),
+      h("div", { class: "row" }, h("button", { class: "btn primary", onclick: add }, "Add / update"),
+        h("span", { class: "small muted" }, "An entry with the same key is updated.")));
+    return h("div", { class: "card stack" },
+      h("div", { class: "row spread" }, h("h3", { style: "margin:0" }, section.title), h("span", { class: "badge" }, data.rows.length + " entr" + (data.rows.length === 1 ? "y" : "ies"))),
+      section.help && h("p", { class: "muted small", style: "margin:0" }, section.help),
+      data.rows.length
+        ? h("div", { class: "scroll-x" }, h("table", {},
+            h("tr", {}, section.fields.map((f) => h("th", {}, f.label)), h("th", {})),
+            data.rows.map((row) => h("tr", {},
+              section.fields.map((f) => h("td", {}, cell(row[f.name], f.type, data.labels))),
+              h("td", { style: "white-space:nowrap" },
+                h("button", { class: "btn icon", title: "Edit", onclick: () => edit(row) }, "✎"),
+                h("button", { class: "btn icon danger", title: "Remove", onclick: () => remove(row) }, "✕"))))))
+        : h("p", { class: "muted", style: "margin:0" }, "Nothing here yet."),
+      addBox);
+  }
+
+  function viewSection(pkg, section, index, data) {
+    const remove = (row) => attempt(async () => {
+      if (!confirm("Remove this entry?")) return;
+      await api(`/guilds/${guildId}/panel/${pkg.id}/${index}/delete`, { method: "POST", body: { key: row._key } });
+      toast("Removed.");
+      await drawPackage();
+    });
+    return h("div", { class: "card stack" },
+      h("div", { class: "row spread" }, h("h3", { style: "margin:0" }, section.title), h("span", { class: "badge" }, data.rows.length)),
+      data.rows.length
+        ? h("div", { class: "scroll-x" }, h("table", {},
+            h("tr", {}, section.columns.map((c) => h("th", {}, c.label)), section.removable && h("th", {})),
+            data.rows.map((row) => h("tr", {},
+              section.columns.map((c) => h("td", {}, cell(row[c.col], c.type, data.labels))),
+              section.removable && h("td", {}, h("button", { class: "btn icon danger", title: "Remove", onclick: () => remove(row) }, "✕"))))))
+        : h("p", { class: "muted", style: "margin:0" }, "Nothing yet."));
+  }
+
+  function oauthSection(section) {
+    const box = h("div", { class: "card stack" }, h("h3", {}, section.title), h("p", { class: "muted small" }, "Loading…"));
+    (async () => {
+      const st = await api(`/guilds/${guildId}/oauth`);
+      const act = (path, ok) => attempt(async () => {
+        const r = await api(`/guilds/${guildId}/oauth/${path}`, { method: "POST" });
+        if (r.url) { window.open(r.url, "_blank", "noopener"); toast("Authorize in the Discord tab, then come back and refresh."); return; }
+        toast(r.error || r.summary || ok, Boolean(r.error));
+        box.replaceWith(oauthSection(section));
+      });
+      const explain = h("p", { class: "muted small", style: "margin:0" },
+        "Discord hides staff commands from members without Manage Messages / Manage Server. A server admin can connect once, " +
+        "and the bot will then keep this server's command menu in step with the lists below: moderator commands become visible " +
+        "to your moderator roles/users, admin commands to your admins, and commands you lowered to Members to everyone.");
+      if (!st.configured) {
+        box.replaceChildren(h("h3", {}, section.title), explain,
+          h("div", { class: "log" }, [
+            "Setup (one time):",
+            "1. Developer Portal → your app → OAuth2: copy the Client Secret into src/config.json as \"CLIENT_SECRET\".",
+            "2. Under OAuth2 → Redirects, add:  " + st.redirectUri,
+            "   (if you open the panel from another address, set \"PANEL_URL\" in config.json to it)",
+            "3. Restart the bot, then come back here and press Connect.",
+          ].join("\n")));
+        return;
+      }
+      box.replaceChildren(h("h3", {}, section.title), explain,
+        h("div", { class: "row" },
+          st.connected
+            ? h("span", { class: "badge ok" }, `Connected as ${st.user ?? "?"}`)
+            : h("span", { class: "badge warn" }, "Not connected"),
+          st.lastSyncAt && h("span", { class: "small muted" }, "Last sync " + new Date(st.lastSyncAt).toLocaleString()),
+          st.lastError && h("span", { class: "small", style: "color:var(--danger)" }, st.lastError)),
+        h("div", { class: "row" },
+          h("button", { class: "btn primary", onclick: () => act("start") }, st.connected ? "Reconnect" : "Connect Discord"),
+          st.connected && h("button", { class: "btn", onclick: () => act("sync", "Synced.") }, "Sync now"),
+          st.connected && h("button", { class: "btn danger", onclick: () => confirm("Stop syncing this server's command menu? (Existing settings stay until changed in Discord.)") && act("disconnect", "Disconnected.") }, "Disconnect")),
+        h("p", { class: "small muted", style: "margin:0" }, "The person who connects needs Manage Server and Manage Roles here. Changes below re-sync automatically."));
+    })().catch((e) => box.replaceChildren(h("h3", {}, section.title), h("p", { style: "color:var(--danger)" }, e.message)));
+    return box;
+  }
+
+  function noteSection(section) {
+    return h("div", { class: "card" }, h("h3", {}, section.title), h("p", { class: "muted", style: "margin:0" }, section.help));
+  }
+
+  const LEVEL_LABEL = { member: "Members", mod: "Moderators", admin: "Admins", owner: "Owner", mixed: "Mixed" };
+  function levelSelect(path, current, fallback, onSaved) {
+    const sel = h("select", { style: "width:auto" },
+      h("option", { value: "" }, `Default (${LEVEL_LABEL[fallback] ?? fallback})`),
+      ["member", "mod", "admin", "owner"].map((l) => h("option", { value: l, selected: l === current }, LEVEL_LABEL[l])));
+    sel.addEventListener("change", () => attempt(async () => {
+      await api(`/guilds/${guildId}/command-levels`, { method: "PUT", body: { command: path, level: sel.value } });
+      toast(`/${path}: ${sel.value ? LEVEL_LABEL[sel.value] : "default"}`);
+      onSaved?.();
+    }));
+    return sel;
+  }
+
+  function commandLevelsSection(section, data) {
+    const filter = h("input", { type: "text", placeholder: "Filter commands…", style: "max-width:260px" });
+    const body = h("div", { class: "stack" });
+    const draw = () => {
+      const q = filter.value.trim().toLowerCase();
+      const groups = new Map();
+      for (const c of data.commands) {
+        if (q && !c.name.includes(q) && !c.subs.some((s) => s.path.includes(q))) continue;
+        if (!groups.has(c.package)) groups.set(c.package, []);
+        groups.get(c.package).push(c);
+      }
+      body.replaceChildren(...[...groups].map(([pkg, cmds]) => h("div", {},
+        h("div", { class: "small muted", style: "text-transform:uppercase;letter-spacing:.05em;margin:6px 0" }, pkg),
+        h("table", {}, cmds.map((c) => {
+          const subRows = c.subs.map((s) => h("tr", { class: "sub", hidden: !q },
+            h("td", { style: "padding-left:28px" }, h("code", {}, "/" + s.path)),
+            h("td", { class: "muted small" }, ""),
+            h("td", {}, levelSelect(s.path, s.override, c.override ? `${LEVEL_LABEL[c.override]} via /${c.name}` : s.default))));
+          const toggle = c.subs.length && h("button", { class: "btn icon small", title: "Subcommands", onclick: () => subRows.forEach((r) => (r.hidden = !r.hidden)) }, `▸ ${c.subs.length}`);
+          return [
+            h("tr", {},
+              h("td", {}, h("code", {}, "/" + c.name), " ", toggle),
+              h("td", { class: "muted small" }, c.description),
+              h("td", {}, levelSelect(c.name, c.override, c.default, () => drawPackage()))),
+            ...subRows,
+          ];
+        }).flat()))));
+    };
+    filter.addEventListener("input", draw);
+    draw();
+    return h("div", { class: "card stack" },
+      h("div", { class: "row spread" }, h("h3", { style: "margin:0" }, section.title), filter),
+      section.help && h("p", { class: "muted small", style: "margin:0" }, section.help),
+      body);
+  }
+
+  // ---- page
+  const body = h("div");
+  const nav = h("div", { class: "pkg-nav" });
+
+  async function drawPackage() {
+    const pkg = schema.find((p) => p.id === pkgId);
+    for (const b of nav.children) b.classList.toggle("active", b.dataset.id === pkgId);
+    const data = await api(`/guilds/${guildId}/panel/${pkg.id}`);
+    body.replaceChildren(
+      h("div", { class: "row spread", style: "margin-bottom:10px" },
+        h("h2", { style: "margin:0" }, pkg.icon + " " + pkg.title),
+        h("span", { class: "small muted" }, "Also in Discord: ", h("code", {}, pkg.command))),
+      ...pkg.sections.map((s, i) =>
+        s.kind === "note" ? noteSection(s)
+        : s.kind === "oauth" ? oauthSection(s)
+        : s.kind === "commandLevels" ? commandLevelsSection(s, data.sections[i])
+        : s.kind === "list" ? listSection(pkg, s, i, data.sections[i])
+        : s.kind === "view" ? viewSection(pkg, s, i, data.sections[i])
+        : formSection(pkg, s, i, data.sections[i])));
+  }
+
+  nav.append(...schema.map((p) => h("button", { "data-id": p.id, onclick: () => attempt(async () => { pkgId = p.id; storage("panelPkg", pkgId); await drawPackage(); }) },
+    h("span", {}, p.icon), h("span", {}, h("div", {}, p.title), h("div", { class: "cmd" }, p.command)))));
+
+  const guildSel = h("select", { style: "max-width:280px", onchange: (e) => attempt(async () => {
+    guildId = e.target.value; storage("panelGuild", guildId); await loadRefs(); await drawPackage();
+  }) }, status.guilds.map((g) => h("option", { value: g.id, selected: g.id === guildId }, g.name)));
+
+  await loadRefs();
+  app.replaceChildren(
+    h("div", { class: "row spread", style: "margin-bottom:14px" }, h("h2", { style: "margin:0" }, "Server settings"), h("label", { class: "row" }, h("span", { class: "muted small" }, "Server"), guildSel)),
+    h("div", { class: "side-layout" }, nav, body));
+  await drawPackage();
+};
+
+boot();
+</script>
+</body>
+</html>

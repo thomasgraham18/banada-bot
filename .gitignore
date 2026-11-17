@@ -170,3 +170,15 @@ start-docker.bat
 Dockerfile
 
 
+
+# Debug dumps written by old @distube/ytdl-core versions
+*-player-script.js
+
+# Stray st.db files and local backups
+src/data.json
+*.zip
+
+# Runtime data written by the bot / web panel (settings, reaction roles, panel token)
+src/data/
+
+docs/

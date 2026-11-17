@@ -1,26 +1,24 @@
 const { EmbedBuilder } = require("discord.js");
-const { Database } = require("st.db");
-
-const DBMessage = new Database("./models/message.json", {
-  databaseInObject: true,
-});
+const announce = require("../../utils/announce");
+const player = require("../../utils/player");
 
 /**
- * Emited when a song is added to the queue.
+ * Emitted when a song is added to the queue.
  * @param {BotClient} client
- * @param {Queue} client
+ * @param {Queue} queue
  * @param {Song} song
  */
 module.exports = async (client, queue, song) => {
-  const data = await DBMessage.get(queue.textChannel.guild.id);
-
-  const msg = await queue.textChannel.messages.cache.get(data.message_id);
-
   const embed = new EmbedBuilder()
     .setDescription(
-      `**Queued • [${song.name}](${song.url})** \`${song.formattedDuration}\` • ${song.user}`
+      `**Queued • [${song.name}](${song.url})** \`${song.formattedDuration}\` • ${
+        song.user ?? ""
+      }`
     )
     .setColor(client.colour);
 
-  await msg.edit({ content: msg.content, embeds: [embed] });
+  await announce(queue, song, embed);
+
+  // Update the "up next" list on the player panel.
+  player.refresh(client, queue.id);
 };

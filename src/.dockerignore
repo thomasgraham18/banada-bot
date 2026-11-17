@@ -1,0 +1,13 @@
+# Windows-built native modules must not be copied over the Linux install.
+node_modules
+npm-debug.log*
+
+# Local junk
+*.zip
+*-player-script.js
+data.json
+models
+*.bat
+Dockerfile
+.dockerignore
+data

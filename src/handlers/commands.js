@@ -1,44 +1,55 @@
-const chillout = require("chillout");
-const readdirRecursive = require("recursive-readdir");
-const { resolve, relative } = require("path");
-const { green, blue, magenta, red } = require("chalk");
+const { InteractionContextType } = require("discord.js");
+const { green, blue, magenta, red, yellow } = require("chalk");
+const { featureCommands } = require("./features");
 
 /**
- * @description Loads all commands in a recursive manner
- * @param {BotClient} client
+ * Returns every command module from every package in src/features.
+ * Shared with deployCommands.js so both always see the same set.
  */
-module.exports = async (client) => {
-  let commandsPath = resolve("./commands");
-  let commandFiles = await readdirRecursive(commandsPath);
+function loadCommandModules() {
+  const modules = [];
+  const seen = new Set();
 
-  await chillout.forEach(commandFiles, (commandFile) => {
-    const startTime = Date.now();
-    const relativePath = relative(__dirname, commandFile);
-    const command = require(commandFile);
-
-    // Set a new item in the Collection with the key as the command name and the value as the exported module
-    if ("data" in command && "execute" in command) {
-      client.commands.set(command.data.name, command);
+  for (const command of featureCommands()) {
+    const file = `features/${command?.data?.name ?? "?"}`;
+    if (seen.has(command?.data?.name)) {
+      console.log(`${red("[ERROR]")} Two packages define /${command.data.name}; skipping the second.`);
+      continue;
+    }
+    seen.add(command?.data?.name);
+    if (command?.data && typeof command.execute === "function") {
+      // Every command needs a server, so hide them all from DMs.
+      // (setContexts replaces the deprecated setDMPermission.)
+      command.data.setContexts(InteractionContextType.Guild);
+      modules.push(command);
     } else {
       console.log(
-        `[WARNING] The command at ${relativePath} is missing a required "data" or "execute" property.`
+        `${yellow("[WARNING]")} The command at ${file} is missing a required "data" or "execute" property.`
       );
     }
+  }
+  return modules;
+}
 
+/**
+ * @description Loads all commands onto client.commands
+ * @param {BotClient} client
+ */
+module.exports = (client) => {
+  for (const command of loadCommandModules()) {
+    client.commands.set(command.data.name, command);
     console.log(
-      `${green("[SUCCESS]")} Loaded command ${magenta(
-        command.data.name
-      )} in ${magenta(Date.now() - startTime)}${magenta("ms")}.`
+      `${green("[SUCCESS]")} Loaded command ${magenta(command.data.name)}.`
     );
-  });
+  }
 
   if (client.commands.size > 0) {
     console.log(
-      `${blue("[INFO]")} ${magenta(
-        client.commands.size
-      )} slash commands loaded.`
+      `${blue("[INFO]")} ${magenta(client.commands.size)} slash commands loaded.`
     );
   } else {
     console.log(red("[ERROR] No slash commands loaded. UH OH RAGGY!"));
   }
 };
+
+module.exports.loadCommandModules = loadCommandModules;
